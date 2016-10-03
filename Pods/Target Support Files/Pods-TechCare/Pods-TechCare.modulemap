@@ -1,0 +1,6 @@
+framework module Pods_TechCare {
+  umbrella header "Pods-TechCare-umbrella.h"
+
+  export *
+  module * { export * }
+}
