@@ -6,11 +6,12 @@ target 'TechCare' do
   use_frameworks!
 
   # Pods for TechCare
-  pod 'Firebase'
-  pod 'Firebase/Database'
-  pod 'Firebase/Auth'
+  #pod 'Firebase'
+  #pod 'Firebase/Database'
+  #pod 'Firebase/Auth'
   pod 'Alamofire', '~> 3.0'
   pod 'SwiftyJSON', '~> 2.4'
   pod 'SDWebImage'
+
 
 end

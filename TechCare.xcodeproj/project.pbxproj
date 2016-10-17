@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		189EB6879366B82FF3A0A0A4 /* Pods_TechCare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77145DC7EEFB409019ACF58F /* Pods_TechCare.framework */; };
+		1F1354631DA67825008A3FB4 /* RequesterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1354621DA67825008A3FB4 /* RequesterListViewController.swift */; };
+		1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */; };
+		1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */; };
+		1F7AE66C1DB47EE7005EFD4F /* CareItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */; };
+		1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE60231DADE430004C377C /* RequestTableViewCell.swift */; };
 		1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609151D9F89F90046C26A /* AppDelegate.swift */; };
 		1FE609181D9F89F90046C26A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609171D9F89F90046C26A /* ViewController.swift */; };
 		1FE6091B1D9F89F90046C26A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FE609191D9F89F90046C26A /* Main.storyboard */; };
@@ -17,6 +22,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F1354621DA67825008A3FB4 /* RequesterListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequesterListViewController.swift; sourceTree = "<group>"; };
+		1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleListViewController.swift; sourceTree = "<group>"; };
+		1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemTableViewCell.swift; sourceTree = "<group>"; };
+		1FDE60231DADE430004C377C /* RequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 		1FE609121D9F89F90046C26A /* TechCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FE609151D9F89F90046C26A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FE609171D9F89F90046C26A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +52,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F7AE6641DB476FB005EFD4F /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */,
+				1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */,
+			);
+			name = Schedule;
+			sourceTree = "<group>";
+		};
+		1F7AE6661DB47729005EFD4F /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				1F1354621DA67825008A3FB4 /* RequesterListViewController.swift */,
+				1FDE60231DADE430004C377C /* RequestTableViewCell.swift */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		1F7AE6671DB47740005EFD4F /* Record */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Record;
+			sourceTree = "<group>";
+		};
+		1F7AE6681DB479F1005EFD4F /* CalendarShare */ = {
+			isa = PBXGroup;
+			children = (
+				1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */,
+			);
+			name = CalendarShare;
+			sourceTree = "<group>";
+		};
 		1FE609091D9F89F90046C26A = {
 			isa = PBXGroup;
 			children = (
@@ -68,8 +111,12 @@
 				1FE609191D9F89F90046C26A /* Main.storyboard */,
 				1FE6091C1D9F89F90046C26A /* Assets.xcassets */,
 				1FE6091E1D9F89F90046C26A /* LaunchScreen.storyboard */,
-				1FE609211D9F89F90046C26A /* Info.plist */,
 				1FE609271DA00D120046C26A /* RegisterViewController.swift */,
+				1FE609211D9F89F90046C26A /* Info.plist */,
+				1F7AE6641DB476FB005EFD4F /* Schedule */,
+				1F7AE6661DB47729005EFD4F /* Setting */,
+				1F7AE6671DB47740005EFD4F /* Record */,
+				1F7AE6681DB479F1005EFD4F /* CalendarShare */,
 			);
 			path = TechCare;
 			sourceTree = "<group>";
@@ -126,6 +173,7 @@
 				TargetAttributes = {
 					1FE609111D9F89F90046C26A = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 8H7X36TF25;
 					};
 				};
 			};
@@ -214,8 +262,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FE609281DA00D120046C26A /* RegisterViewController.swift in Sources */,
+				1F1354631DA67825008A3FB4 /* RequesterListViewController.swift in Sources */,
 				1FE609181D9F89F90046C26A /* ViewController.swift in Sources */,
+				1F7AE66C1DB47EE7005EFD4F /* CareItemTableViewCell.swift in Sources */,
 				1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */,
+				1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */,
+				1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */,
+				1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +384,7 @@
 			baseConfigurationReference = AC3840DA0CB6B049CDEB4F01 /* Pods-TechCare.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TechCare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeff.TechCare;
@@ -343,6 +397,7 @@
 			baseConfigurationReference = 36D263FCBA17036550E3DF6C /* Pods-TechCare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TechCare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeff.TechCare;
