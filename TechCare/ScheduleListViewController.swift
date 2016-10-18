@@ -161,6 +161,17 @@ extension ScheduleListViewController: UITableViewDataSource {
 
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "SpecificItemSegue" {
+            let _ = segue.destinationViewController as! SpecialItemViewController
+        }
+    }
+}
+
+extension ScheduleListViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
 }
 
 
