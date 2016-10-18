@@ -63,18 +63,14 @@ class ScheduleListViewController: UIViewController {
         
         //比對今日日期在陣列中是第幾個
         let index = dateArray.indexOf(today!)
-print("index = \(index)")
         
         //滾動到今天日期，並置於最左側
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
-        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.Left, animated: false)
+        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
         
         dateHighlightCurrentIndex = indexPath.row
         
-        let date = dateArray[indexPath.row]
-print("today date = \(date)")
-        yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
-        
+        yearMonth.text = "\(calendar.component(.Year, fromDate: today!))/\(calendar.component(.Month, fromDate: today!))"
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,6 +88,7 @@ print("today date = \(date)")
         //Label換顏色以表示完成
         cell.careItem.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
         cell.operationTime.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
+        cell.requesterName.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
     }
     
     

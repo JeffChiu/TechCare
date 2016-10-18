@@ -1,5 +1,5 @@
 //
-//  CareItemTableViewCell.swift
+//  AddSettingsTableViewCell.swift
 //  TechCare
 //
 //  Created by Chiu Chih-Che on 2016/10/17.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class CareItemTableViewCell: UITableViewCell {
+class AddSettingsTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var requesterName: UILabel!
-    @IBOutlet weak var careItem: UILabel!
-    @IBOutlet weak var operationTime: UILabel!
-    @IBOutlet weak var finishItem: UIButton!
+    @IBOutlet weak var careItemName: UILabel!
+    @IBOutlet weak var operationTimeTextField: UITextField!
+    @IBOutlet weak var sendNotification: UISwitch!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

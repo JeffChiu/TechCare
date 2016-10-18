@@ -12,6 +12,9 @@
 		1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */; };
 		1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */; };
 		1F7AE66C1DB47EE7005EFD4F /* CareItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */; };
+		1F7AE6721DB522DD005EFD4F /* AddSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */; };
+		1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */; };
+		1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */; };
 		1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE60231DADE430004C377C /* RequestTableViewCell.swift */; };
 		1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609151D9F89F90046C26A /* AppDelegate.swift */; };
 		1FE609181D9F89F90046C26A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609171D9F89F90046C26A /* ViewController.swift */; };
@@ -26,6 +29,9 @@
 		1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleListViewController.swift; sourceTree = "<group>"; };
 		1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemTableViewCell.swift; sourceTree = "<group>"; };
+		1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsViewController.swift; sourceTree = "<group>"; };
+		1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsTableViewCell.swift; sourceTree = "<group>"; };
+		1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemModel.swift; sourceTree = "<group>"; };
 		1FDE60231DADE430004C377C /* RequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 		1FE609121D9F89F90046C26A /* TechCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FE609151D9F89F90046C26A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,29 +58,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1F7AE6641DB476FB005EFD4F /* Schedule */ = {
+		1F7AE6641DB476FB005EFD4F /* Tab_1_Schedule */ = {
 			isa = PBXGroup;
 			children = (
 				1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */,
 				1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */,
 			);
-			name = Schedule;
+			name = Tab_1_Schedule;
 			sourceTree = "<group>";
 		};
-		1F7AE6661DB47729005EFD4F /* Setting */ = {
+		1F7AE6661DB47729005EFD4F /* Tab_2_Setting */ = {
 			isa = PBXGroup;
 			children = (
 				1F1354621DA67825008A3FB4 /* RequesterListViewController.swift */,
 				1FDE60231DADE430004C377C /* RequestTableViewCell.swift */,
+				1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */,
+				1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */,
 			);
-			name = Setting;
+			name = Tab_2_Setting;
 			sourceTree = "<group>";
 		};
-		1F7AE6671DB47740005EFD4F /* Record */ = {
+		1F7AE6671DB47740005EFD4F /* Tab_3_Record */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Record;
+			name = Tab_3_Record;
 			sourceTree = "<group>";
 		};
 		1F7AE6681DB479F1005EFD4F /* CalendarShare */ = {
@@ -83,6 +91,14 @@
 				1F1354641DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift */,
 			);
 			name = CalendarShare;
+			sourceTree = "<group>";
+		};
+		1F7AE6751DB5C265005EFD4F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		1FE609091D9F89F90046C26A = {
@@ -113,10 +129,11 @@
 				1FE6091E1D9F89F90046C26A /* LaunchScreen.storyboard */,
 				1FE609271DA00D120046C26A /* RegisterViewController.swift */,
 				1FE609211D9F89F90046C26A /* Info.plist */,
-				1F7AE6641DB476FB005EFD4F /* Schedule */,
-				1F7AE6661DB47729005EFD4F /* Setting */,
-				1F7AE6671DB47740005EFD4F /* Record */,
+				1F7AE6641DB476FB005EFD4F /* Tab_1_Schedule */,
+				1F7AE6661DB47729005EFD4F /* Tab_2_Setting */,
+				1F7AE6671DB47740005EFD4F /* Tab_3_Record */,
 				1F7AE6681DB479F1005EFD4F /* CalendarShare */,
+				1F7AE6751DB5C265005EFD4F /* Model */,
 			);
 			path = TechCare;
 			sourceTree = "<group>";
@@ -266,6 +283,9 @@
 				1FE609181D9F89F90046C26A /* ViewController.swift in Sources */,
 				1F7AE66C1DB47EE7005EFD4F /* CareItemTableViewCell.swift in Sources */,
 				1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */,
+				1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */,
+				1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */,
+				1F7AE6721DB522DD005EFD4F /* AddSettingsViewController.swift in Sources */,
 				1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */,
 				1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */,
 				1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */,

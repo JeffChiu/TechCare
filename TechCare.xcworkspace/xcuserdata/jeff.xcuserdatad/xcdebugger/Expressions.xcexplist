@@ -13,5 +13,13 @@
       <ContextState
          contextName = "RequesterListViewController.viewDidLoad() -&gt; ():RequesterListViewController.swift">
       </ContextState>
+      <ContextState
+         contextName = "AddSettingsViewController.pickerDefault(NSDate) -&gt; NSDate:AddSettingsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "componentsYMD.minute">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

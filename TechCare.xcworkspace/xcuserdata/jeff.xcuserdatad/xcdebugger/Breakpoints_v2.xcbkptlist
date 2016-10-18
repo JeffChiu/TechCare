@@ -19,14 +19,76 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TechCare/RequesterListViewController.swift"
-            timestampString = "498232470.614743"
+            filePath = "TechCare/AddSettingViewController.swift"
+            timestampString = "498409772.716945"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "AddSettingViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TechCare.AddSettingViewController.addSettingTableView.getter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UITableView&gt;"
+                  moduleName = "TechCare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeff/Documents/Xcode_workspace/TechCare/TechCare/AddSettingViewController.swift"
+                  timestampString = "498409772.723565"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TechCare.AddSettingViewController.addSettingTableView.setter : weak Swift.ImplicitlyUnwrappedOptional&lt;__ObjC.UITableView&gt;"
+                  moduleName = "TechCare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeff/Documents/Xcode_workspace/TechCare/TechCare/AddSettingViewController.swift"
+                  timestampString = "498409772.723967"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TechCare.AddSettingViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.NSBundle&gt;) -&gt; TechCare.AddSettingViewController"
+                  moduleName = "TechCare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeff/Documents/Xcode_workspace/TechCare/TechCare/AddSettingViewController.swift"
+                  timestampString = "498409772.724145"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "160">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TechCare.AddSettingViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;TechCare.AddSettingViewController&gt;"
+                  moduleName = "TechCare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeff/Documents/Xcode_workspace/TechCare/TechCare/AddSettingViewController.swift"
+                  timestampString = "498409772.724296"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "96">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -35,29 +97,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TechCare/RequesterListViewController.swift"
-            timestampString = "498232460.019779"
+            filePath = "TechCare/AddSettingsViewController.swift"
+            timestampString = "498492644.055625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TechCare/ScheduleListViewController.swift"
-            timestampString = "498395583.763794"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "finishItemBtn(_:)"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "changeSwitch(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

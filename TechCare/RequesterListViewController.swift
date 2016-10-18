@@ -61,23 +61,26 @@ class RequesterListViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //設定系統時間的時分秒為00:00:00
-        let today = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        var selectDate: NSDate?
+        
+        if let dateHighlightCurrentIndex = dateHighlightCurrentIndex {
+            selectDate = dateArray[dateHighlightCurrentIndex]
+        } else {
+            //設定目前系統時間的時分秒為00:00:00
+            selectDate = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        }
         
         //比對今日日期在陣列中是第幾個
-        let index = dateArray.indexOf(today!)
-print("index = \(index)")
+        let index = dateArray.indexOf(selectDate!)
+
         
         //滾動到今天日期，並置於最左側
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
-        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.Left, animated: false)
+        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
         
         dateHighlightCurrentIndex = indexPath.row
         
-        let date = dateArray[indexPath.row]
-print("today date = \(date)")
-        yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
-        
+        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))/\(calendar.component(.Month, fromDate: selectDate!))"
     }
     
     override func didReceiveMemoryWarning() {
@@ -100,13 +103,9 @@ extension RequesterListViewController: UICollectionViewDataSource {
 
         cell.calendarLabel.text = "\(calendar.component(.Day, fromDate: dateArray[indexPath.row]))"
         cell.dateObject = dateArray[indexPath.row]
-print("cell date = \(dateArray[indexPath.row]) , day = \(calendar.component(.Day, fromDate: dateArray[indexPath.row]))")
-
-        
         
         //點選的那一個日期改底色，其他的底色設為透明
         if indexPath.row == dateHighlightCurrentIndex {
-print("cell select date = \(dateArray[indexPath.row]) , select day = \(calendar.component(.Day, fromDate: dateArray[indexPath.row]))")
             cell.backgroundColor = dateBackgroundUIColor
         } else {
             cell.backgroundColor = UIColor.clearColor()
@@ -128,7 +127,6 @@ extension RequesterListViewController: UICollectionViewDelegate {
         
         
         let date = dateArray[indexPath.row]
-print("didselect date = \(date) , yearMonth = \(yearMonth.text)")
         yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
         
         collectionView.reloadData()
@@ -151,22 +149,13 @@ extension RequesterListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! RequestTableViewCell
         cell.personalBackgroundImageView.backgroundColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0) //綠色
         return cell
-//        var product = Product()
-//        
-//        if isFilter {
-//            product = filterProductArray[indexPath.row]
-//        } else {
-//            product = productArray[indexPath.row]
-//        }
-//        return self.getProductCellWithTableView(tableView, indexPath: indexPath, product: product)
     }
     
-//    func getProductCellWithTableView(tableView: UITableView, indexPath: NSIndexPath, product: Product) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("ProductListTableViewCell", forIndexPath: indexPath) as! ProductTableViewCell
-//        cell.productImageView?.sd_setImageWithURL(NSURL(string: product.packageUrl))
-//        cell.productName.text = product.productName
-//        cell.productPrice.text = "$ " + product.singlePrice + "/片"
-//        return cell
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "AddSettingSegue" {
+            let vc = segue.destinationViewController as! AddSettingsViewController
+            vc.inputDate = dateArray[dateHighlightCurrentIndex!]
+        }
+    }
 }
 
