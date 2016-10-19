@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="L5G-OV-WfU">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -674,6 +674,56 @@
             </objects>
             <point key="canvasLocation" x="3026" y="249"/>
         </scene>
+        <!--Record View Controller-->
+        <scene sceneID="2QP-SK-BMX">
+            <objects>
+                <viewController id="L5G-OV-WfU" customClass="RecordViewController" customModule="TechCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9bX-Nt-4s3"/>
+                        <viewControllerLayoutGuide type="bottom" id="rLR-21-44R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="16O-TF-o3k">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2q5-hC-x9R" customClass="BarChartView" customModule="Charts">
+                                <rect key="frame" x="20" y="20" width="560" height="380"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yKg-CV-2Y3">
+                                <rect key="frame" x="20" y="400" width="560" height="200"/>
+                            </pickerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rLR-21-44R" firstAttribute="top" secondItem="2q5-hC-x9R" secondAttribute="bottom" multiplier="1.5" id="09y-62-zuR"/>
+                            <constraint firstItem="yKg-CV-2Y3" firstAttribute="top" secondItem="2q5-hC-x9R" secondAttribute="bottom" id="Ac3-gF-gxs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2q5-hC-x9R" secondAttribute="trailing" id="MYn-4L-q2f"/>
+                            <constraint firstItem="2q5-hC-x9R" firstAttribute="leading" secondItem="16O-TF-o3k" secondAttribute="leadingMargin" id="Nca-aQ-F9x"/>
+                            <constraint firstItem="yKg-CV-2Y3" firstAttribute="top" secondItem="9bX-Nt-4s3" secondAttribute="bottom" constant="378" id="QJE-d9-8sv"/>
+                            <constraint firstItem="rLR-21-44R" firstAttribute="top" secondItem="yKg-CV-2Y3" secondAttribute="bottom" id="TeG-Ik-efz"/>
+                            <constraint firstItem="2q5-hC-x9R" firstAttribute="top" secondItem="9bX-Nt-4s3" secondAttribute="bottom" id="cx7-HN-Kdx"/>
+                            <constraint firstItem="rLR-21-44R" firstAttribute="top" secondItem="yKg-CV-2Y3" secondAttribute="bottom" id="obj-n7-OcD"/>
+                            <constraint firstItem="yKg-CV-2Y3" firstAttribute="leading" secondItem="16O-TF-o3k" secondAttribute="leadingMargin" id="q2i-ff-6x7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yKg-CV-2Y3" secondAttribute="trailing" id="rdS-xK-yw6"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="QJE-d9-8sv"/>
+                                <exclude reference="obj-n7-OcD"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <connections>
+                        <outlet property="barChartView" destination="2q5-hC-x9R" id="Y5H-5X-YSa"/>
+                        <outlet property="pickerView" destination="yKg-CV-2Y3" id="fn8-5U-aRg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1o9-vA-P8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3026" y="1103"/>
+        </scene>
         <!--歷史記錄-->
         <scene sceneID="cof-7F-vOq">
             <objects>
@@ -691,7 +741,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zLb-WM-oaC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2206" y="1003"/>
+            <point key="canvasLocation" x="2214" y="1103"/>
         </scene>
         <!--設定-->
         <scene sceneID="uQq-f1-Xew">

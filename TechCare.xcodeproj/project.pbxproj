@@ -16,6 +16,7 @@
 		1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */; };
 		1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */; };
 		1FBCB6DF1DB6772A00D41F1F /* SpecialItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */; };
+		1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */; };
 		1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE60231DADE430004C377C /* RequestTableViewCell.swift */; };
 		1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609151D9F89F90046C26A /* AppDelegate.swift */; };
 		1FE609181D9F89F90046C26A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609171D9F89F90046C26A /* ViewController.swift */; };
@@ -34,6 +35,7 @@
 		1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemModel.swift; sourceTree = "<group>"; };
 		1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialItemViewController.swift; sourceTree = "<group>"; };
+		1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		1FDE60231DADE430004C377C /* RequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 		1FE609121D9F89F90046C26A /* TechCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FE609151D9F89F90046C26A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		1F7AE6671DB47740005EFD4F /* Tab_3_Record */ = {
 			isa = PBXGroup;
 			children = (
+				1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */,
 			);
 			name = Tab_3_Record;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */,
 				1F7AE6721DB522DD005EFD4F /* AddSettingsViewController.swift in Sources */,
 				1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */,
+				1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */,
 				1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */,
 				1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */,
 			);
