@@ -14,19 +14,19 @@ class DateUtil {
     static func convertWeekdayToTC(weekday: Int) -> String {
         switch weekday {
         case 1:
-            return "日"
+            return "Sun"
         case 2:
-            return "一"
+            return "Mon"
         case 3:
-            return "二"
+            return "Tue"
         case 4:
-            return "三"
+            return "Wed"
         case 5:
-            return "四"
+            return "Thu"
         case 6:
-            return "五"
+            return "Fri"
         case 7:
-            return "六"
+            return "Sat"
         default:
             return "X"
         }

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class AddSettingsViewController: UIViewController {
 
@@ -17,7 +19,11 @@ class AddSettingsViewController: UIViewController {
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
+    var dateFormatter = NSDateFormatter()
     var inputDate: NSDate?
+    var inputRequesterName: String?
+    var inputRequesterId: String?
+    var careDate: String?
     var careItemArray: [String] = []
     var careItemDictionary: [Int:CareItemModel] = [:] //[itemId:CareItemModel物件]
     
@@ -27,6 +33,8 @@ class AddSettingsViewController: UIViewController {
     let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 200))
     var currentTextField: UITextField?
     var currentTextFieldIndex: Int?
+    let userDefault = NSUserDefaults.standardUserDefaults()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +45,7 @@ class AddSettingsViewController: UIViewController {
         label.textAlignment = .Center
         label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
         self.navigationItem.titleView = label
+        self.navigationItem.title = "照顧事項設定"
         
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
@@ -63,7 +72,7 @@ class AddSettingsViewController: UIViewController {
         careItemDictionary[19] = CareItemModel(itemId: "19", itemName: "陪同就醫")
         careItemDictionary[20] = CareItemModel(itemId: "20", itemName: "代領藥品")
         careItemDictionary[21] = CareItemModel(itemId: "21", itemName: "量血壓/心跳")
-        careItemDictionary[22] = CareItemModel(itemId: "22", itemName: "陪同散步")
+        careItemDictionary[22] = CareItemModel(itemId: "22", itemName: "量血糖")
         careItemDictionary[23] = CareItemModel(itemId: "23", itemName: "陪同散步")
         careItemDictionary[24] = CareItemModel(itemId: "24", itemName: "閱讀書報")
         
@@ -117,12 +126,13 @@ class AddSettingsViewController: UIViewController {
         }
         
         let layout = calendarCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let width = (UIScreen.mainScreen().bounds.width - 5 * 8) / 7
+        let width = (UIScreen.mainScreen().bounds.width - 8 * 8) / 7
         print("UIScreen.mainScreen().bounds.width = \(UIScreen.mainScreen().bounds.width) , width = \(width)")
-        layout.itemSize = CGSize(width: width, height: width)
+        layout.itemSize = CGSize(width: width, height: 60)
         
-        
-        
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+//        
     }
 
     
@@ -146,7 +156,7 @@ class AddSettingsViewController: UIViewController {
         
         dateHighlightCurrentIndex = indexPath.row
 
-        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))/\(calendar.component(.Month, fromDate: selectDate!))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))年\(calendar.component(.Month, fromDate: selectDate!))月"
     }
     
     func openDatePicker(sender: UITextField) {
@@ -163,6 +173,31 @@ class AddSettingsViewController: UIViewController {
         currentTextField = sender
         currentTextFieldIndex = sender.tag
         sender.inputView = datePicker
+        
+        self.datePickerWillShow()
+    }
+    
+    func datePickerWillShow() {
+        
+        var contentInsets: UIEdgeInsets
+        
+        if UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) {
+            contentInsets = UIEdgeInsetsMake(0.0, 0.0, self.datePicker.bounds.height, 0.0)
+        } else {
+            contentInsets = UIEdgeInsetsMake(0.0, 0.0, self.datePicker.bounds.height, 0.0)
+        }
+        
+        UIView.animateWithDuration(3) {
+            self.careItemTableView.contentInset = contentInsets
+//            self.careItemTableView.scrollIndicatorInsets = contentInsets
+        }
+    }
+    
+    func datePickerWillHide() {
+        UIView.animateWithDuration(3) {
+            self.careItemTableView.contentInset = UIEdgeInsetsZero
+//            self.careItemTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+        }
     }
     
     func pickerDone() {
@@ -172,10 +207,13 @@ class AddSettingsViewController: UIViewController {
         
         self.careItemTableView.reloadData()
         currentTextField?.resignFirstResponder()
+        
+        self.datePickerWillHide()
     }
     
     func pickerCancel() {
         currentTextField?.resignFirstResponder()
+        self.datePickerWillHide()
     }
     
     func changeSwitch(sender: UISwitch) {
@@ -183,6 +221,7 @@ class AddSettingsViewController: UIViewController {
         self.careItemTableView.reloadData()
     }
     
+    //date picker 預設停留的時間區塊 (00分 or 30分)
     func pickerDefault(currentTime: NSDate) -> NSDate {
         var minuteDefault: Int?
         let calendar = NSCalendar.currentCalendar()
@@ -209,6 +248,49 @@ class AddSettingsViewController: UIViewController {
         }
     }
     
+    
+    /*
+    func insertData() {
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        careDate = dateFormatter.stringFromDate(selectDate!)
+
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/setItems"
+        Alamofire.request(.POST, urlString, parameters: [
+            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+            "care_date" : "\(careDate)",
+            "requester_id" : "\(inputRequesterId)",
+            "items_data" : "\(convertSetting2JSON(careItemDictionary))"
+            ]).responseJSON(){
+                response in
+                if let jsonData = response.result.value {
+                    print("requesterList api response : \(jsonData)")
+                    let json = JSON(jsonData)
+                    let status = json["status"].stringValue
+                    let message = json["message"].stringValue
+                    if status == "200" {
+                        
+                        
+                    } else {
+                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        print("\(#function) error : api response message = \(message)")
+                        
+                    }
+                    
+                }
+                
+                
+                self.careItemTableView.reloadData()
+        }
+    }*/
+    
+    
+    func convertSetting2JSON(settingsData: [Int:CareItemModel]) -> String {
+        
+        return "{\"items_data\" : [{\"item_id\" : \"1\",\"operation_time\" : \"0900\",\"important\" : \"true\"},{\"item_id\" : \"2\",\"operation_time\" : \"1000\",\"important\" : \"false\"}]}"
+    }
     
     @IBAction func saveSetting(sender: AnyObject) {
         for (itemId, careItemObj) in careItemDictionary {
@@ -250,13 +332,17 @@ extension AddSettingsViewController: UICollectionViewDataSource {
         //點選的那一個日期改底色，其他的底色設為透明
         if indexPath.row == dateHighlightCurrentIndex {
             cell.backgroundColor = dateBackgroundUIColor
+            cell.dayOfWeek.textColor = UIColor.whiteColor()
+            cell.calendarLabel.textColor = UIColor.whiteColor()
         } else {
             cell.backgroundColor = UIColor.clearColor()
+            cell.dayOfWeek.textColor = UIColor.grayColor()
+            cell.calendarLabel.textColor = UIColor.blackColor()
         }
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         return cell
     }
 }
@@ -270,7 +356,7 @@ extension AddSettingsViewController: UICollectionViewDelegate {
         
         
         let date = dateArray[indexPath.row]
-        yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         
         collectionView.reloadData()
         

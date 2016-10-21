@@ -24,11 +24,11 @@ class RequesterListViewController: UIViewController {
     var dateFormatter = NSDateFormatter()
     
     
-    
     let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
     let calendar = NSCalendar.currentCalendar()
     let userDefault = NSUserDefaults.standardUserDefaults()
     var requsterModelArray: [RequesterModel] = []
+    var selectRequsterMdoel: RequesterModel?
     
     
     
@@ -49,6 +49,7 @@ class RequesterListViewController: UIViewController {
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
         RequestTableView.dataSource = self
+        RequestTableView.delegate = self
         
 //        let dateFormatter = NSDateFormatter()
 //        dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -73,9 +74,9 @@ class RequesterListViewController: UIViewController {
         }
         
         let layout = calendarCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let width = (UIScreen.mainScreen().bounds.width - 5 * 8) / 7
+        let width = (UIScreen.mainScreen().bounds.width - 8 * 8) / 7
         print("UIScreen.mainScreen().bounds.width = \(UIScreen.mainScreen().bounds.width) , width = \(width)")
-        layout.itemSize = CGSize(width: width, height: width)
+        layout.itemSize = CGSize(width: width, height: 60)
         
         
         
@@ -99,11 +100,12 @@ class RequesterListViewController: UIViewController {
         
         //滾動到今天日期，並置於最左側
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
-        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
+        self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: true)
         
         dateHighlightCurrentIndex = indexPath.row
         
-        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))/\(calendar.component(.Month, fromDate: selectDate!))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))年\(calendar.component(.Month, fromDate: selectDate!))月"
+        
         
         fetchRequesterList()
     }
@@ -190,13 +192,17 @@ extension RequesterListViewController: UICollectionViewDataSource {
         //點選的那一個日期改底色，其他的底色設為透明
         if indexPath.row == dateHighlightCurrentIndex {
             cell.backgroundColor = dateBackgroundUIColor
+            cell.dayOfWeek.textColor = UIColor.whiteColor()
+            cell.calendarLabel.textColor = UIColor.whiteColor()
         } else {
             cell.backgroundColor = UIColor.clearColor()
+            cell.dayOfWeek.textColor = UIColor.grayColor()
+            cell.calendarLabel.textColor = UIColor.blackColor()
         }
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         return cell
     }
 }
@@ -210,7 +216,7 @@ extension RequesterListViewController: UICollectionViewDelegate {
         
         
         let date = dateArray[indexPath.row]
-        yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         
         collectionView.reloadData()
         
@@ -247,7 +253,15 @@ extension RequesterListViewController: UITableViewDataSource {
         if segue.identifier == "AddSettingSegue" {
             let vc = segue.destinationViewController as! AddSettingsViewController
             vc.inputDate = dateArray[dateHighlightCurrentIndex!]
+            //vc.inputRequesterName = selectRequsterMdoel?.name
+
         }
+    }
+}
+
+extension RequesterListViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectRequsterMdoel = requsterModelArray[indexPath.row]
     }
 }
 

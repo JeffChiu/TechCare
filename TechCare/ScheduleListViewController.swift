@@ -54,9 +54,9 @@ class ScheduleListViewController: UIViewController {
         }
         
         let layout = calendarCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let width = (UIScreen.mainScreen().bounds.width - 5 * 8) / 7
+        let width = (UIScreen.mainScreen().bounds.width - 8 * 8) / 7
         print("UIScreen.mainScreen().bounds.width = \(UIScreen.mainScreen().bounds.width) , width = \(width)")
-        layout.itemSize = CGSize(width: width, height: width)
+        layout.itemSize = CGSize(width: width, height: 60)
         
         
         
@@ -77,7 +77,7 @@ class ScheduleListViewController: UIViewController {
         
         dateHighlightCurrentIndex = indexPath.row
         
-        yearMonth.text = "\(calendar.component(.Year, fromDate: today!))/\(calendar.component(.Month, fromDate: today!))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: today!))年\(calendar.component(.Month, fromDate: today!))月"
     }
     
     override func didReceiveMemoryWarning() {
@@ -118,13 +118,17 @@ extension ScheduleListViewController: UICollectionViewDataSource {
         //點選的那一個日期改底色，其他的底色設為透明
         if indexPath.row == dateHighlightCurrentIndex {
             cell.backgroundColor = dateBackgroundUIColor
+            cell.dayOfWeek.textColor = UIColor.whiteColor()
+            cell.calendarLabel.textColor = UIColor.whiteColor()
         } else {
             cell.backgroundColor = UIColor.clearColor()
+            cell.dayOfWeek.textColor = UIColor.grayColor()
+            cell.calendarLabel.textColor = UIColor.blackColor()
         }
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         return cell
     }
 }
@@ -138,7 +142,7 @@ extension ScheduleListViewController: UICollectionViewDelegate {
         
         
         let date = dateArray[indexPath.row]
-        yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
         
         collectionView.reloadData()
         
@@ -167,6 +171,7 @@ extension ScheduleListViewController: UITableViewDataSource {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "SpecificItemSegue" {
             let _ = segue.destinationViewController as! SpecialItemViewController
+            
         }
     }
 }
