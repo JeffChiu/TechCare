@@ -8,14 +8,12 @@
 
 import UIKit
 
-class RequestTableViewCell: UITableViewCell {
+class Request2TableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var personalImageView: UIImageView!
     @IBOutlet weak var personalBackgroundImageView: UIView!
     
-    @IBOutlet weak var requesterName: UILabel!
-    @IBOutlet weak var requesterInfo: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -1,5 +1,5 @@
 //
-//  RequesterListViewController.swift
+//  RequesterList2ViewController.swift
 //  TechCare
 //
 //  Created by Chiu Chih-Che on 2016/10/6.
@@ -8,33 +8,29 @@
 
 import UIKit
 
-class ScheduleListViewController: UIViewController {
+class RequesterList2ViewController: UIViewController {
 
     @IBOutlet weak var calendarCollectionView: UICollectionView!
-    @IBOutlet weak var CareItemTableView: UITableView!
+    @IBOutlet weak var RequestTableView: UITableView!
     @IBOutlet weak var yearMonth: UILabel!
-    
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
     
-    let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
+    let dateBackgroundUIColor: UIColor = UIColor(red:1.00, green:0.41, blue:0.52, alpha:1.0) //紅色
     let calendar = NSCalendar.currentCalendar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Navigation Item UI
-        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
-        label.text = "我的服務"
-        label.textAlignment = .Center
-        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
-        self.navigationItem.titleView = label
-        
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
-        CareItemTableView.dataSource = self
+        RequestTableView.dataSource = self
         
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        var startDateTime = dateFormatter.dateFromString("2016-09-01")
+//        startDateTime = calendar.dateBySettingHour(0, minute: 0, second: 0, ofDate: startDateTime!, options: [])
         
         let components = NSDateComponents()
         components.year = 2016
@@ -65,11 +61,18 @@ class ScheduleListViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //設定系統時間的時分秒為00:00:00
-        let today = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        var selectDate: NSDate?
+        
+        if let dateHighlightCurrentIndex = dateHighlightCurrentIndex {
+            selectDate = dateArray[dateHighlightCurrentIndex]
+        } else {
+            //設定目前系統時間的時分秒為00:00:00
+            selectDate = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        }
         
         //比對今日日期在陣列中是第幾個
-        let index = dateArray.indexOf(today!)
+        let index = dateArray.indexOf(selectDate!)
+
         
         //滾動到今天日期，並置於最左側
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
@@ -77,7 +80,7 @@ class ScheduleListViewController: UIViewController {
         
         dateHighlightCurrentIndex = indexPath.row
         
-        yearMonth.text = "\(calendar.component(.Year, fromDate: today!))/\(calendar.component(.Month, fromDate: today!))"
+        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))/\(calendar.component(.Month, fromDate: selectDate!))"
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,23 +88,10 @@ class ScheduleListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func finishItemBtn(sender: UIButton) {
-        //button disabled
-        sender.enabled = false
-        
-        let indexPath = NSIndexPath(forItem: sender.tag, inSection: 0)
-        let cell = CareItemTableView.cellForRowAtIndexPath(indexPath) as! CareItemTableViewCell
-        
-        //Label換顏色以表示完成
-        cell.careItem.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
-        cell.operationTime.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
-        cell.requesterName.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
-    }
-    
     
 }
 
-extension ScheduleListViewController: UICollectionViewDataSource {
+extension RequesterList2ViewController: UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -112,7 +102,6 @@ extension ScheduleListViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CalendarCollectionViewCell
 
         cell.calendarLabel.text = "\(calendar.component(.Day, fromDate: dateArray[indexPath.row]))"
-        cell.dayOfWeek.text = "\(DateUtil.convertWeekdayToTC(calendar.component(.Weekday, fromDate: dateArray[indexPath.row])))"
         cell.dateObject = dateArray[indexPath.row]
         
         //點選的那一個日期改底色，其他的底色設為透明
@@ -129,7 +118,7 @@ extension ScheduleListViewController: UICollectionViewDataSource {
     }
 }
 
-extension ScheduleListViewController: UICollectionViewDelegate {
+extension RequesterList2ViewController: UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         //變更新點選日期底色 (記得要reloadData)
@@ -146,36 +135,27 @@ extension ScheduleListViewController: UICollectionViewDelegate {
     }
 }
 
-extension ScheduleListViewController: UITableViewDataSource {
+extension RequesterList2ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CareItemTableViewCell
-        cell.finishItem.tag = indexPath.row
-        cell.finishItem.addTarget(self, action: #selector(finishItemBtn(_:)), forControlEvents: .TouchUpInside)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! Request2TableViewCell
+        cell.personalBackgroundImageView.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.63, alpha:1.0) //淡黃色
         return cell
-
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "SpecificItemSegue" {
-            let _ = segue.destinationViewController as! SpecialItemViewController
+        if segue.identifier == "GraphRecordSegue" {
+            let vc = segue.destinationViewController as! RecordViewController
+            vc.inputDate = dateArray[dateHighlightCurrentIndex!]
         }
     }
 }
-
-extension ScheduleListViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
-}
-
-
 

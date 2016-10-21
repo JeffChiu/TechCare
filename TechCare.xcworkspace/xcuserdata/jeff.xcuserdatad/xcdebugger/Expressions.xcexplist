@@ -3,6 +3,38 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "ViewController.prepareSegue() -&gt; ():ViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.userDefault.stringForKey(TechCareDef.APPLICATION_TOKEN) ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "RequesterListViewController.fetchRequesterList() -&gt; ():RequesterListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "careDate">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AddSettingsViewController.pickerDefault(NSDate) -&gt; NSDate:AddSettingsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "componentsYMD.minute">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "RequesterListViewController.(fetchRequesterList() -&gt; ()).(closure #1):RequesterListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "requsterModelArray.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ScheduleListViewController.finishItemBtn(UIButton) -&gt; ():ScheduleListViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -14,10 +46,10 @@
          contextName = "RequesterListViewController.viewDidLoad() -&gt; ():RequesterListViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "AddSettingsViewController.pickerDefault(NSDate) -&gt; NSDate:AddSettingsViewController.swift">
+         contextName = "ViewController.login(AnyObject) -&gt; ():ViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "componentsYMD.minute">
+               value = "acc.text">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

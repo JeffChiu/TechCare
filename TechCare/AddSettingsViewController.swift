@@ -21,7 +21,7 @@ class AddSettingsViewController: UIViewController {
     var careItemArray: [String] = []
     var careItemDictionary: [Int:CareItemModel] = [:] //[itemId:CareItemModel物件]
     
-    let dateBackgroundUIColor: UIColor = UIColor(red:1.00, green:0.41, blue:0.52, alpha:1.0) //紅色
+    let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
     let calendar = NSCalendar.currentCalendar()
     
     let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 200))
@@ -30,6 +30,13 @@ class AddSettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Navigation Item UI
+        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
+        label.text = "照顧事項設定"
+        label.textAlignment = .Center
+        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
+        self.navigationItem.titleView = label
         
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
@@ -208,14 +215,13 @@ class AddSettingsViewController: UIViewController {
             print("itemId=\(itemId),itemName=\(careItemObj.itemName!),operationTime=\(careItemObj.operationTime),sendNotification=\(careItemObj.sendNotification)")
         }
 
-        //alert關閉後不能pop回去
-//        let alert = UIAlertController(title: "照顧事項已更新", message: nil, preferredStyle: .Alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-//        self.presentViewController(alert, animated: true, completion: {
-//            self.navigationController?.popViewControllerAnimated(true)
-//        })
-        
-        self.navigationController?.popViewControllerAnimated(true)
+        let alert = UIAlertController(title: "照顧事項已完成設定", message: nil, preferredStyle: .Alert)
+        let ok = UIAlertAction(title: "OK", style: .Default) { (UIAlertAction) in
+            self.navigationController?.popViewControllerAnimated(true);
+        }
+        alert.addAction(ok)
+        self.presentViewController(alert, animated: true, completion: nil)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -237,6 +243,7 @@ extension AddSettingsViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CalendarCollectionViewCell
 
         cell.calendarLabel.text = "\(calendar.component(.Day, fromDate: dateArray[indexPath.row]))"
+        cell.dayOfWeek.text = "\(DateUtil.convertWeekdayToTC(calendar.component(.Weekday, fromDate: dateArray[indexPath.row])))"
         cell.dateObject = dateArray[indexPath.row]
 
         

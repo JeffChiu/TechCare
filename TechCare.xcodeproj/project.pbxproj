@@ -15,8 +15,13 @@
 		1F7AE6721DB522DD005EFD4F /* AddSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */; };
 		1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */; };
 		1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */; };
+		1F7B1A101DB9839000E1763C /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B1A0F1DB9839000E1763C /* DateUtil.swift */; };
+		1F8FA1D71DB8F55C00E0300D /* RequesterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FA1D61DB8F55C00E0300D /* RequesterModel.swift */; };
 		1FBCB6DF1DB6772A00D41F1F /* SpecialItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */; };
 		1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */; };
+		1FBCB6E31DB768FE00D41F1F /* RequesterList2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E21DB768FE00D41F1F /* RequesterList2ViewController.swift */; };
+		1FBCB6E51DB76C4100D41F1F /* Request2TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E41DB76C4100D41F1F /* Request2TableViewCell.swift */; };
+		1FBCB6E91DB8BA0C00D41F1F /* TechCareDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E81DB8BA0C00D41F1F /* TechCareDef.swift */; };
 		1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE60231DADE430004C377C /* RequestTableViewCell.swift */; };
 		1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609151D9F89F90046C26A /* AppDelegate.swift */; };
 		1FE609181D9F89F90046C26A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE609171D9F89F90046C26A /* ViewController.swift */; };
@@ -34,8 +39,13 @@
 		1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsViewController.swift; sourceTree = "<group>"; };
 		1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemModel.swift; sourceTree = "<group>"; };
+		1F7B1A0F1DB9839000E1763C /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
+		1F8FA1D61DB8F55C00E0300D /* RequesterModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequesterModel.swift; sourceTree = "<group>"; };
 		1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialItemViewController.swift; sourceTree = "<group>"; };
 		1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
+		1FBCB6E21DB768FE00D41F1F /* RequesterList2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequesterList2ViewController.swift; sourceTree = "<group>"; };
+		1FBCB6E41DB76C4100D41F1F /* Request2TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request2TableViewCell.swift; sourceTree = "<group>"; };
+		1FBCB6E81DB8BA0C00D41F1F /* TechCareDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TechCareDef.swift; sourceTree = "<group>"; };
 		1FDE60231DADE430004C377C /* RequestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 		1FE609121D9F89F90046C26A /* TechCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TechCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FE609151D9F89F90046C26A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -62,17 +72,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1F7AE6641DB476FB005EFD4F /* Tab_1_Schedule */ = {
+		1F7AE6641DB476FB005EFD4F /* Tab_2_Schedule */ = {
 			isa = PBXGroup;
 			children = (
 				1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */,
 				1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */,
 				1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */,
 			);
-			name = Tab_1_Schedule;
+			name = Tab_2_Schedule;
 			sourceTree = "<group>";
 		};
-		1F7AE6661DB47729005EFD4F /* Tab_2_Setting */ = {
+		1F7AE6661DB47729005EFD4F /* Tab_1_Setting */ = {
 			isa = PBXGroup;
 			children = (
 				1F1354621DA67825008A3FB4 /* RequesterListViewController.swift */,
@@ -80,12 +90,14 @@
 				1F7AE6711DB522DD005EFD4F /* AddSettingsViewController.swift */,
 				1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */,
 			);
-			name = Tab_2_Setting;
+			name = Tab_1_Setting;
 			sourceTree = "<group>";
 		};
 		1F7AE6671DB47740005EFD4F /* Tab_3_Record */ = {
 			isa = PBXGroup;
 			children = (
+				1FBCB6E21DB768FE00D41F1F /* RequesterList2ViewController.swift */,
+				1FBCB6E41DB76C4100D41F1F /* Request2TableViewCell.swift */,
 				1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */,
 			);
 			name = Tab_3_Record;
@@ -103,8 +115,34 @@
 			isa = PBXGroup;
 			children = (
 				1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */,
+				1F8FA1D61DB8F55C00E0300D /* RequesterModel.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		1F7B1A0E1DB9837500E1763C /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				1F7B1A0F1DB9839000E1763C /* DateUtil.swift */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		1FBCB6E61DB8B97100D41F1F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1FE609171D9F89F90046C26A /* ViewController.swift */,
+				1FE609271DA00D120046C26A /* RegisterViewController.swift */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		1FBCB6E71DB8B9E200D41F1F /* GlobalDef */ = {
+			isa = PBXGroup;
+			children = (
+				1FBCB6E81DB8BA0C00D41F1F /* TechCareDef.swift */,
+			);
+			name = GlobalDef;
 			sourceTree = "<group>";
 		};
 		1FE609091D9F89F90046C26A = {
@@ -129,17 +167,18 @@
 			isa = PBXGroup;
 			children = (
 				1FE609151D9F89F90046C26A /* AppDelegate.swift */,
-				1FE609171D9F89F90046C26A /* ViewController.swift */,
 				1FE609191D9F89F90046C26A /* Main.storyboard */,
 				1FE6091C1D9F89F90046C26A /* Assets.xcassets */,
 				1FE6091E1D9F89F90046C26A /* LaunchScreen.storyboard */,
-				1FE609271DA00D120046C26A /* RegisterViewController.swift */,
 				1FE609211D9F89F90046C26A /* Info.plist */,
-				1F7AE6641DB476FB005EFD4F /* Tab_1_Schedule */,
-				1F7AE6661DB47729005EFD4F /* Tab_2_Setting */,
+				1FBCB6E61DB8B97100D41F1F /* Login */,
+				1F7AE6661DB47729005EFD4F /* Tab_1_Setting */,
+				1F7AE6641DB476FB005EFD4F /* Tab_2_Schedule */,
 				1F7AE6671DB47740005EFD4F /* Tab_3_Record */,
 				1F7AE6681DB479F1005EFD4F /* CalendarShare */,
 				1F7AE6751DB5C265005EFD4F /* Model */,
+				1FBCB6E71DB8B9E200D41F1F /* GlobalDef */,
+				1F7B1A0E1DB9837500E1763C /* Utility */,
 			);
 			path = TechCare;
 			sourceTree = "<group>";
@@ -285,7 +324,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FE609281DA00D120046C26A /* RegisterViewController.swift in Sources */,
+				1F8FA1D71DB8F55C00E0300D /* RequesterModel.swift in Sources */,
 				1F1354631DA67825008A3FB4 /* RequesterListViewController.swift in Sources */,
+				1FBCB6E31DB768FE00D41F1F /* RequesterList2ViewController.swift in Sources */,
 				1FE609181D9F89F90046C26A /* ViewController.swift in Sources */,
 				1F7AE66C1DB47EE7005EFD4F /* CareItemTableViewCell.swift in Sources */,
 				1FE609161D9F89F90046C26A /* AppDelegate.swift in Sources */,
@@ -293,8 +334,11 @@
 				1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */,
 				1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */,
 				1F7AE6721DB522DD005EFD4F /* AddSettingsViewController.swift in Sources */,
+				1FBCB6E91DB8BA0C00D41F1F /* TechCareDef.swift in Sources */,
+				1FBCB6E51DB76C4100D41F1F /* Request2TableViewCell.swift in Sources */,
 				1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */,
 				1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */,
+				1F7B1A101DB9839000E1763C /* DateUtil.swift in Sources */,
 				1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */,
 				1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */,
 			);
@@ -414,6 +458,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TechCare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeff.TechCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -427,6 +472,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TechCare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jeff.TechCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
