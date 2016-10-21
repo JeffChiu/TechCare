@@ -10,6 +10,7 @@ import UIKit
 
 class CalendarCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var dayOfWeek: UILabel!
     @IBOutlet weak var calendarLabel: UILabel!
     var dateObject: NSDate?
 }

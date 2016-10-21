@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (3.5.0)
+  - Charts (2.2.5):
+    - Charts/Core (= 2.2.5)
+  - Charts/Core (2.2.5)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -7,14 +10,16 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 3.0)
+  - Charts (~> 2.2.5)
   - SDWebImage
   - SwiftyJSON (~> 2.4)
 
 SPEC CHECKSUMS:
   Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
   SDWebImage: '098e97e6176540799c27e804c96653ee0833d13c'
   SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
 
-PODFILE CHECKSUM: 04227ccd9b9607e2d9669a77c44b0790cea3d111
+PODFILE CHECKSUM: e53ab5091d62bb6b61b80eac0f7e61f9a9688f3a
 
 COCOAPODS: 1.0.1

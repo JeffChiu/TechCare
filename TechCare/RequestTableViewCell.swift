@@ -14,6 +14,8 @@ class RequestTableViewCell: UITableViewCell {
     @IBOutlet weak var personalImageView: UIImageView!
     @IBOutlet weak var personalBackgroundImageView: UIView!
     
+    @IBOutlet weak var requesterName: UILabel!
+    @IBOutlet weak var requesterInfo: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

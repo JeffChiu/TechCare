@@ -18,11 +18,18 @@ class ScheduleListViewController: UIViewController {
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
     
-    let dateBackgroundUIColor: UIColor = UIColor(red:1.00, green:0.41, blue:0.52, alpha:1.0)
+    let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
     let calendar = NSCalendar.currentCalendar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Navigation Item UI
+        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
+        label.text = "我的服務"
+        label.textAlignment = .Center
+        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
+        self.navigationItem.titleView = label
         
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
@@ -105,14 +112,11 @@ extension ScheduleListViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CalendarCollectionViewCell
 
         cell.calendarLabel.text = "\(calendar.component(.Day, fromDate: dateArray[indexPath.row]))"
+        cell.dayOfWeek.text = "\(DateUtil.convertWeekdayToTC(calendar.component(.Weekday, fromDate: dateArray[indexPath.row])))"
         cell.dateObject = dateArray[indexPath.row]
-print("cell date = \(dateArray[indexPath.row]) , day = \(calendar.component(.Day, fromDate: dateArray[indexPath.row]))")
-
-        
         
         //點選的那一個日期改底色，其他的底色設為透明
         if indexPath.row == dateHighlightCurrentIndex {
-print("cell select date = \(dateArray[indexPath.row]) , select day = \(calendar.component(.Day, fromDate: dateArray[indexPath.row]))")
             cell.backgroundColor = dateBackgroundUIColor
         } else {
             cell.backgroundColor = UIColor.clearColor()
@@ -134,7 +138,6 @@ extension ScheduleListViewController: UICollectionViewDelegate {
         
         
         let date = dateArray[indexPath.row]
-print("didselect date = \(date) , yearMonth = \(yearMonth.text)")
         yearMonth.text = "\(calendar.component(.Year, fromDate: date))/\(calendar.component(.Month, fromDate: date))"
         
         collectionView.reloadData()

@@ -12,6 +12,7 @@ target 'TechCare' do
   pod 'Alamofire', '~> 3.0'
   pod 'SwiftyJSON', '~> 2.4'
   pod 'SDWebImage'
+  pod 'Charts', '~> 2.2.5'
 
 
 end

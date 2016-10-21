@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
+import SDWebImage
 
 class RequesterListViewController: UIViewController {
 
@@ -16,12 +19,32 @@ class RequesterListViewController: UIViewController {
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
+    var selectDate: NSDate?
+    var careDate: String?
+    var dateFormatter = NSDateFormatter()
     
-    let dateBackgroundUIColor: UIColor = UIColor(red:1.00, green:0.41, blue:0.52, alpha:1.0) //紅色
+    
+    
+    let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
     let calendar = NSCalendar.currentCalendar()
+    let userDefault = NSUserDefaults.standardUserDefaults()
+    var requsterModelArray: [RequesterModel] = []
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let app_token = userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN) {
+                print("\(#function) , token =  \(app_token)")
+        }
+        
+        //Navigation Item UI
+        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
+        label.text = "服務對象"
+        label.textAlignment = .Center
+        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
+        self.navigationItem.titleView = label
         
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
@@ -61,14 +84,14 @@ class RequesterListViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        var selectDate: NSDate?
-        
         if let dateHighlightCurrentIndex = dateHighlightCurrentIndex {
             selectDate = dateArray[dateHighlightCurrentIndex]
         } else {
             //設定目前系統時間的時分秒為00:00:00
             selectDate = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
         }
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        careDate = dateFormatter.stringFromDate(selectDate!)
         
         //比對今日日期在陣列中是第幾個
         let index = dateArray.indexOf(selectDate!)
@@ -81,6 +104,65 @@ class RequesterListViewController: UIViewController {
         dateHighlightCurrentIndex = indexPath.row
         
         yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))/\(calendar.component(.Month, fromDate: selectDate!))"
+        
+        fetchRequesterList()
+    }
+    
+    func fetchRequesterList() {
+        //資料清空
+        self.RequestTableView.backgroundView = nil
+        requsterModelArray.removeAll()
+        
+        //透過API取得資料
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/requesterList"
+        Alamofire.request(.POST, urlString, parameters: [
+            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+            "query_date" : "\(careDate)"
+            ]).responseJSON(){
+                response in
+                if let jsonData = response.result.value {
+                    print("requesterList api response : \(jsonData)")
+                    let json = JSON(jsonData)
+                    let status = json["status"].stringValue
+                    let message = json["message"].stringValue
+                    if status == "200" {
+                        
+                        let jsonList = json["requester_data"].arrayValue
+                        for data in jsonList {
+                            let id = data["requester_id"].stringValue
+                            let name = data["name"].stringValue
+                            let photoUrl = "\(TechCareDef.HOST)\(data["photo_url"].stringValue)"
+                            let info = data["status_info"].stringValue
+                            let isSet = data["isSet"].boolValue
+                            self.requsterModelArray.append(RequesterModel(id: id, name: name, photoUrl: photoUrl, info: info, isSet: isSet))
+                        }
+                        
+                        
+                        
+                    } else {
+                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        print("\(#function) error : api response message = \(message)")
+                        
+                    }
+                    
+                }
+                
+                //如果沒資料，顯示特定文字（取資料時注意背景要先清空）
+                if self.requsterModelArray.count == 0 {
+                    let noDataLabel: UILabel = UILabel(frame: CGRectMake(0, 0, self.RequestTableView.bounds.size.width, self.RequestTableView.bounds.size.height))
+                    noDataLabel.text             = "本日無照顧對象"
+                    noDataLabel.textColor        = UIColor.blackColor()
+                    noDataLabel.textAlignment    = .Center
+                    self.RequestTableView.backgroundView = noDataLabel
+                    self.RequestTableView.separatorStyle = .None
+                    
+                }
+                
+                self.RequestTableView.reloadData()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -102,6 +184,7 @@ extension RequesterListViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CalendarCollectionViewCell
 
         cell.calendarLabel.text = "\(calendar.component(.Day, fromDate: dateArray[indexPath.row]))"
+        cell.dayOfWeek.text = "\(DateUtil.convertWeekdayToTC(calendar.component(.Weekday, fromDate: dateArray[indexPath.row])))"
         cell.dateObject = dateArray[indexPath.row]
         
         //點選的那一個日期改底色，其他的底色設為透明
@@ -132,6 +215,11 @@ extension RequesterListViewController: UICollectionViewDelegate {
         collectionView.reloadData()
         
         dateHighlightCurrentIndex = indexPath.row
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
+        
+        
+        fetchRequesterList()
     }
 }
 
@@ -141,13 +229,17 @@ extension RequesterListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return requsterModelArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! RequestTableViewCell
-        cell.personalBackgroundImageView.backgroundColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0) //綠色
+        let requesterModel = requsterModelArray[indexPath.row]
+        //cell.personalBackgroundImageView.backgroundColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0) //綠色
+        cell.personalImageView.sd_setImageWithURL(NSURL(string: requesterModel.photoUrl!))
+        cell.requesterName.text = requesterModel.name
+        cell.requesterInfo.text = requesterModel.info
         return cell
     }
     
