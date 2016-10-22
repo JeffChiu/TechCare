@@ -30,7 +30,7 @@ class RequesterListViewController: UIViewController {
     var requsterModelArray: [RequesterModel] = []
     var selectRequsterMdoel: RequesterModel?
     
-    
+    var test: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -253,15 +253,19 @@ extension RequesterListViewController: UITableViewDataSource {
         if segue.identifier == "AddSettingSegue" {
             let vc = segue.destinationViewController as! AddSettingsViewController
             vc.inputDate = dateArray[dateHighlightCurrentIndex!]
-            //vc.inputRequesterName = selectRequsterMdoel?.name
-
+            
+            //Alex貢獻idea
+            let indexPath = self.RequestTableView.indexPathForSelectedRow
+            vc.inputRequesterName = requsterModelArray[indexPath!.row].name!
+            vc.inputRequesterId = requsterModelArray[indexPath!.row].id
+            vc.inputIsSet = requsterModelArray[indexPath!.row].isSet
         }
     }
 }
 
 extension RequesterListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectRequsterMdoel = requsterModelArray[indexPath.row]
+        
     }
 }
 

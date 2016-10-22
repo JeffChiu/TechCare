@@ -23,10 +23,28 @@ class SpecialItemViewController: UIViewController {
     @IBOutlet weak var bsTextField: UITextField!
     @IBOutlet weak var bsUnit: UILabel!
     
+    let userDefault = NSUserDefaults.standardUserDefaults()
+    var inputCareItemModel: CareItemModel?
+    var itemId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if itemId == "21" {  //量血壓/心跳
+            bsName.hidden = true
+            bsTextField.hidden = true
+            bsUnit.hidden = true
+        } else if itemId == "22" {  //量血糖
+            spName.hidden = true
+            spTextField.hidden = true
+            spUnit.hidden = true
+            dpName.hidden = true
+            dpTextField.hidden = true
+            dpUnit.hidden = true
+            hrName.hidden = true
+            hrTextField.hidden = true
+            hrUnit.hidden = true
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -36,6 +54,15 @@ class SpecialItemViewController: UIViewController {
     }
     
     @IBAction func add(sender: AnyObject) {
+        if itemId == "21" {  //量血壓/心跳
+            self.inputCareItemModel?.systolic = self.spTextField.text!
+            self.inputCareItemModel?.diastolic = self.dpTextField.text!
+            self.inputCareItemModel?.heartRate = self.hrTextField.text!
+            //userDefault.setObject("\(inputCareItemModel)", forKey: "SpecificCareItem")
+        } else if itemId == "22" {  //量血糖
+            self.inputCareItemModel?.bloodSugar = self.bsTextField.text!
+            //userDefault.setObject("\(inputCareItemModel)", forKey: "SpecificCareItem")
+        }
         dismissViewControllerAnimated(true, completion: nil)
     }
     

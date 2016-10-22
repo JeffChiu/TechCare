@@ -15,6 +15,7 @@ class AddSettingsViewController: UIViewController {
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     @IBOutlet weak var careItemTableView: UITableView!
     @IBOutlet weak var yearMonth: UILabel!
+    @IBOutlet weak var saveBtn: UIBarButtonItem!
     
     
     var dateArray: [NSDate] = []
@@ -23,8 +24,8 @@ class AddSettingsViewController: UIViewController {
     var inputDate: NSDate?
     var inputRequesterName: String?
     var inputRequesterId: String?
+    var inputIsSet:Bool?
     var careDate: String?
-    var careItemArray: [String] = []
     var careItemDictionary: [Int:CareItemModel] = [:] //[itemId:CareItemModel物件]
     
     let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
@@ -35,22 +36,8 @@ class AddSettingsViewController: UIViewController {
     var currentTextFieldIndex: Int?
     let userDefault = NSUserDefaults.standardUserDefaults()
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        //Navigation Item UI
-        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
-        label.text = "照顧事項設定"
-        label.textAlignment = .Center
-        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
-        self.navigationItem.titleView = label
-        self.navigationItem.title = "照顧事項設定"
-        
-        calendarCollectionView.dataSource = self
-        calendarCollectionView.delegate = self
-        careItemTableView.dataSource = self
-        
+    func initSettingData() {
+        self.careItemDictionary.removeAll()
         careItemDictionary[1] = CareItemModel(itemId: "1", itemName: "陪伴")
         careItemDictionary[2] = CareItemModel(itemId: "2", itemName: "情緒支持")
         careItemDictionary[3] = CareItemModel(itemId: "3", itemName: "盥洗")
@@ -75,38 +62,42 @@ class AddSettingsViewController: UIViewController {
         careItemDictionary[22] = CareItemModel(itemId: "22", itemName: "量血糖")
         careItemDictionary[23] = CareItemModel(itemId: "23", itemName: "陪同散步")
         careItemDictionary[24] = CareItemModel(itemId: "24", itemName: "閱讀書報")
+        careItemDictionary[25] = CareItemModel(itemId: "25", itemName: "服藥：早餐飯前")
+        careItemDictionary[26] = CareItemModel(itemId: "26", itemName: "服藥：早餐飯後")
+        careItemDictionary[27] = CareItemModel(itemId: "27", itemName: "服藥：中餐飯前")
+        careItemDictionary[28] = CareItemModel(itemId: "28", itemName: "服藥：中餐飯後")
+        careItemDictionary[29] = CareItemModel(itemId: "29", itemName: "服藥：晚餐飯前")
+        careItemDictionary[30] = CareItemModel(itemId: "30", itemName: "服藥：晚餐飯後")
+        careItemDictionary[31] = CareItemModel(itemId: "31", itemName: "服藥：睡前")
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        //Navigation Item UI
+        let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
+        label.text = "\(inputRequesterName!)"
+        label.textAlignment = .Center
+        label.font = TechCareDef.NAVIGATION_LABEL_FONT_SIZE
+        self.navigationItem.titleView = label
+        self.navigationItem.title = "\(inputRequesterName!)"
         
-        //準備照顧事項
-        careItemArray.append("陪伴")
-        careItemArray.append("情緒支持")
-        careItemArray.append("盥洗")
-        careItemArray.append("入浴")
-        careItemArray.append("如廁")
-        careItemArray.append("更衣")
-        careItemArray.append("餵食")
-        careItemArray.append("餵藥")
-        careItemArray.append("肢體關節運動")
-        careItemArray.append("翻身")
-        careItemArray.append("拍背")
-        careItemArray.append("洗衣")
-        careItemArray.append("服務對象起居環境清潔")
-        careItemArray.append("陪同或代理購物")
-        careItemArray.append("備餐(購買)")
-        careItemArray.append("備餐(煮食)")
-        careItemArray.append("協助申請社會福利服務")
-        careItemArray.append("代寫書信及聯絡親友")
-        careItemArray.append("陪同就醫")
-        careItemArray.append("代領藥品")
-        careItemArray.append("量血壓/心跳")
-        careItemArray.append("量血糖")
-        careItemArray.append("陪同散步")
-        careItemArray.append("閱讀書報")
+        calendarCollectionView.dataSource = self
+        calendarCollectionView.delegate = self
+        careItemTableView.dataSource = self
         
+        initSettingData()
         
 //        let dateFormatter = NSDateFormatter()
 //        dateFormatter.dateFormat = "yyyy-MM-dd"
 //        var startDateTime = dateFormatter.dateFromString("2016-09-01")
 //        startDateTime = calendar.dateBySettingHour(0, minute: 0, second: 0, ofDate: startDateTime!, options: [])
+        
+        //將串入日期參數轉換格式
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        careDate = dateFormatter.stringFromDate(inputDate!)
+        
         
         let components = NSDateComponents()
         components.year = 2016
@@ -136,6 +127,7 @@ class AddSettingsViewController: UIViewController {
     }
 
     
+    
     override func viewDidAppear(animated: Bool) {
         
         var selectDate: NSDate?
@@ -157,6 +149,13 @@ class AddSettingsViewController: UIViewController {
         dateHighlightCurrentIndex = indexPath.row
 
         yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))年\(calendar.component(.Month, fromDate: selectDate!))月"
+        
+        //如果已經完成設定，則顯示已設定資料，並且disable save按鈕
+        if inputIsSet == true {
+            fetchItemList()
+            self.saveBtn.enabled = false
+        }
+        
     }
     
     func openDatePicker(sender: UITextField) {
@@ -177,8 +176,9 @@ class AddSettingsViewController: UIViewController {
         self.datePickerWillShow()
     }
     
+    
+    //[steven解決]Date Picker出現時，將table view推高(關鍵：調整ContentInsets)
     func datePickerWillShow() {
-        
         var contentInsets: UIEdgeInsets
         
         if UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation) {
@@ -187,16 +187,16 @@ class AddSettingsViewController: UIViewController {
             contentInsets = UIEdgeInsetsMake(0.0, 0.0, self.datePicker.bounds.height, 0.0)
         }
         
-        UIView.animateWithDuration(3) {
+        UIView.animateWithDuration(1) {
             self.careItemTableView.contentInset = contentInsets
-//            self.careItemTableView.scrollIndicatorInsets = contentInsets
+            //self.careItemTableView.scrollIndicatorInsets = contentInsets
         }
     }
     
     func datePickerWillHide() {
-        UIView.animateWithDuration(3) {
+        UIView.animateWithDuration(1) {
             self.careItemTableView.contentInset = UIEdgeInsetsZero
-//            self.careItemTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+            //self.careItemTableView.scrollIndicatorInsets = UIEdgeInsetsZero
         }
     }
     
@@ -248,27 +248,49 @@ class AddSettingsViewController: UIViewController {
         }
     }
     
-    
-    /*
-    func insertData() {
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        careDate = dateFormatter.stringFromDate(selectDate!)
-
-        let urlString: String = "\(TechCareDef.HOST)/api/v1/setItems"
+    func fetchItemList() {
+        
+        print("\(#function) application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
+        print("\(#function) care_date = \(careDate!)")
+        print("\(#function) requester_id = \(inputRequesterId!)")
+        
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/itemsList"
         Alamofire.request(.POST, urlString, parameters: [
             "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
-            "care_date" : "\(careDate)",
-            "requester_id" : "\(inputRequesterId)",
-            "items_data" : "\(convertSetting2JSON(careItemDictionary))"
+            "care_date" : "\(careDate!)",
+            "requester_id" : "\(inputRequesterId!)"
             ]).responseJSON(){
                 response in
                 if let jsonData = response.result.value {
-                    print("requesterList api response : \(jsonData)")
+                    print("itemsList api response : \(jsonData)")
                     let json = JSON(jsonData)
                     let status = json["status"].stringValue
                     let message = json["message"].stringValue
                     if status == "200" {
                         
+                        if message == "No data" {
+                            self.initSettingData()
+                            self.saveBtn.enabled = true
+                        } else {
+                            let jsonList = json["items_data"].arrayValue
+                            for data in jsonList {
+                                let requesterId = data["requester_id"].stringValue
+                                let requesterName = data["requester_name"].stringValue
+                                let eventId = data["event_id"].stringValue
+                                let operationTime = data["operation_time"].stringValue
+                                let itemId = data["item_id"].stringValue
+                                let itemName = data["name"].stringValue
+                                let completeTime = data["complete_time"].stringValue
+                                let sendNotification = data["important"].boolValue
+                                var note = data["note"].stringValue
+                                if itemId == "26" {  //26:服藥，note欄位存放藥品url
+                                    note += "\(TechCareDef.HOST)\(note)"
+                                }
+                                
+                                self.careItemDictionary[Int(itemId)!] = CareItemModel(requesterId: requesterId, requesterName: requesterName, itemId: itemId, itemName: itemName, eventId: eventId, operationTime: operationTime, sendNotification: sendNotification, completeTime: completeTime, note: note)
+                            }
+                            self.saveBtn.enabled = false
+                        }
                         
                     } else {
                         let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
@@ -281,34 +303,119 @@ class AddSettingsViewController: UIViewController {
                     
                 }
                 
-                
                 self.careItemTableView.reloadData()
         }
-    }*/
+    }
+    
+    //回傳值
+//    func fetchRequesterList(requesterId: String,careDate: String) -> [Bool:Bool] {
+//        var returnkey: Bool = false
+//        var returnVal: Bool = false
+//        
+//        print("\(#function) application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
+//        print("\(#function) query_date = \(careDate)")
+//        
+//        //透過API取得資料
+//        let urlString: String = "\(TechCareDef.HOST)/api/v1/requesterList"
+//        Alamofire.request(.POST, urlString, parameters: [
+//            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+//            "query_date" : "\(careDate)"
+//            ]).responseJSON(){
+//                response in
+//                if let jsonData = response.result.value {
+//                    print("requesterList api response : \(jsonData)")
+//                    let json = JSON(jsonData)
+//                    let status = json["status"].stringValue
+//                    let message = json["message"].stringValue
+//                    if status == "200" {
+//                        returnkey = true
+//                        
+//                        let jsonList = json["requester_data"].arrayValue
+//                        for data in jsonList {
+//                            if requesterId == data["requester_id"].stringValue {
+//                                let isSet = data["isSet"].boolValue
+//                                returnVal = isSet
+//                            }
+//                        }
+//                    } else {
+//                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+//                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+//                        alert.addAction(ok)
+//                        self.presentViewController(alert, animated: true, completion: nil)
+//                        print("\(#function) error : api response message = \(message)")
+//                    }
+//                }
+//        }
+//        return [returnkey : returnVal]
+//    }
+    
+    func insertData() {
+        
+        
+        print("\(#function) application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
+        print("\(#function) care_date = \(careDate!)")
+        print("\(#function) requester_id = \(inputRequesterId!)")
+        print("\(#function) items_data = \(convertSetting2JSON(careItemDictionary))")
+        
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/setItems"
+        Alamofire.request(.POST, urlString, parameters: [
+            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+            "care_date" : "\(careDate!)",
+            "requester_id" : "\(inputRequesterId!)",
+            "items_data" : "\(convertSetting2JSON(careItemDictionary))"
+            ]).responseJSON(){
+                response in
+                if let jsonData = response.result.value {
+                    print("requesterList api response : \(jsonData)")
+                    let json = JSON(jsonData)
+                    let status = json["status"].stringValue
+                    let message = json["message"].stringValue
+                    if status == "200" {
+
+                        let alert = UIAlertController(title: "照顧事項已完成設定", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default) { (UIAlertAction) in
+                            //self.navigationController?.popViewControllerAnimated(true);
+                            self.fetchItemList()
+                        }
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        print("\(#function) error : api response message = \(message)")
+                        
+                    }
+                    
+                }
+                self.careItemTableView.reloadData()
+        }
+        
+    }
     
     
     func convertSetting2JSON(settingsData: [Int:CareItemModel]) -> String {
+        var completeJSON: String = ""
+        var segmentJSON: String = ""
+        for careItemModel in settingsData.values {
+            if careItemModel.operationTime != nil && careItemModel.operationTime?.characters.count > 0 {
+                segmentJSON += "\(segmentJSON.characters.count > 0 ?",":"") {\"item_id\" : \"\(careItemModel.itemId!)\",\"operation_time\" : \"\(DateUtil.operationTimeFormat(careItemModel.operationTime!))\",\"important\" : \"\(careItemModel.sendNotification)\"}"
+            }
+        }
         
-        return "{\"items_data\" : [{\"item_id\" : \"1\",\"operation_time\" : \"0900\",\"important\" : \"true\"},{\"item_id\" : \"2\",\"operation_time\" : \"1000\",\"important\" : \"false\"}]}"
+        completeJSON = "{\"items_data\" : [\(segmentJSON)]}"
+        print("completeJSON = \(completeJSON)")
+        
+        return completeJSON
     }
     
     @IBAction func saveSetting(sender: AnyObject) {
         for (itemId, careItemObj) in careItemDictionary {
             print("itemId=\(itemId),itemName=\(careItemObj.itemName!),operationTime=\(careItemObj.operationTime),sendNotification=\(careItemObj.sendNotification)")
         }
-
-        let alert = UIAlertController(title: "照顧事項已完成設定", message: nil, preferredStyle: .Alert)
-        let ok = UIAlertAction(title: "OK", style: .Default) { (UIAlertAction) in
-            self.navigationController?.popViewControllerAnimated(true);
-        }
-        alert.addAction(ok)
-        self.presentViewController(alert, animated: true, completion: nil)
-
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        insertData()
     }
     
     
@@ -361,6 +468,32 @@ extension AddSettingsViewController: UICollectionViewDelegate {
         collectionView.reloadData()
         
         dateHighlightCurrentIndex = indexPath.row
+        careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
+        
+        
+        
+//        let result: [Bool: Bool] = fetchRequesterList(inputRequesterId!, careDate: careDate!)
+//        for (foundRequester,isSet) in result {
+//            if foundRequester == true {
+//                if isSet == true {
+//                    fetchItemList()
+//                    self.saveBtn.enabled = false
+//                } else {
+//                    initSettingData()
+//                    self.careItemTableView.reloadData()
+//                    self.saveBtn.enabled = true
+//                }
+//            } else {
+//                initSettingData()
+//                self.careItemTableView.reloadData()
+//                self.saveBtn.enabled = false
+//                
+//            }
+//        }
+        
+        fetchItemList()
+        
+        
     }
 }
 

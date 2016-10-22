@@ -32,4 +32,14 @@ class DateUtil {
         }
     }
     
+    //轉換時間顯示格式 09:00 -> 0900
+    static func operationTimeFormat(inputDate: String) -> String {
+        var returnVal: String = inputDate
+        if inputDate.characters.count == 5 {
+            let range: Range<String.Index> = inputDate.rangeOfString(":")!
+            returnVal.removeRange(range)
+        }
+        return returnVal
+    }
+    
 }

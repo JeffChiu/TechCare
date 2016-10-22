@@ -16,6 +16,7 @@
 		1F7AE6741DB5268C005EFD4F /* AddSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */; };
 		1F7AE6771DB5C28B005EFD4F /* CareItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */; };
 		1F7B1A101DB9839000E1763C /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B1A0F1DB9839000E1763C /* DateUtil.swift */; };
+		1F7B1A121DBB67CF00E1763C /* PhotoConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B1A111DBB67CF00E1763C /* PhotoConfirmViewController.swift */; };
 		1F8FA1D71DB8F55C00E0300D /* RequesterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FA1D61DB8F55C00E0300D /* RequesterModel.swift */; };
 		1FBCB6DF1DB6772A00D41F1F /* SpecialItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */; };
 		1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */; };
@@ -40,6 +41,7 @@
 		1F7AE6731DB5268C005EFD4F /* AddSettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		1F7AE6761DB5C28B005EFD4F /* CareItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareItemModel.swift; sourceTree = "<group>"; };
 		1F7B1A0F1DB9839000E1763C /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
+		1F7B1A111DBB67CF00E1763C /* PhotoConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoConfirmViewController.swift; sourceTree = "<group>"; };
 		1F8FA1D61DB8F55C00E0300D /* RequesterModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequesterModel.swift; sourceTree = "<group>"; };
 		1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialItemViewController.swift; sourceTree = "<group>"; };
 		1FBCB6E01DB70FB000D41F1F /* RecordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				1F7AE6691DB47E2C005EFD4F /* ScheduleListViewController.swift */,
 				1F7AE66B1DB47EE7005EFD4F /* CareItemTableViewCell.swift */,
 				1FBCB6DE1DB6772A00D41F1F /* SpecialItemViewController.swift */,
+				1F7B1A111DBB67CF00E1763C /* PhotoConfirmViewController.swift */,
 			);
 			name = Tab_2_Schedule;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				1FBCB6E51DB76C4100D41F1F /* Request2TableViewCell.swift in Sources */,
 				1F1354651DA6A7EA008A3FB4 /* CalendarCollectionViewCell.swift in Sources */,
 				1FBCB6E11DB70FB000D41F1F /* RecordViewController.swift in Sources */,
+				1F7B1A121DBB67CF00E1763C /* PhotoConfirmViewController.swift in Sources */,
 				1F7B1A101DB9839000E1763C /* DateUtil.swift in Sources */,
 				1F7AE66A1DB47E2C005EFD4F /* ScheduleListViewController.swift in Sources */,
 				1FDE60241DADE430004C377C /* RequestTableViewCell.swift in Sources */,

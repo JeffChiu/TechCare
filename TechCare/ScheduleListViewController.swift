@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class ScheduleListViewController: UIViewController {
 
@@ -19,7 +21,13 @@ class ScheduleListViewController: UIViewController {
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
     
     let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
+    let userDefault = NSUserDefaults.standardUserDefaults()
     let calendar = NSCalendar.currentCalendar()
+    var dateFormatter = NSDateFormatter()
+    var selectDate: NSDate?
+    var careDate: String?
+    
+    var careItemArray: [CareItemModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,19 +73,95 @@ class ScheduleListViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        //設定系統時間的時分秒為00:00:00
-        let today = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        if let dateHighlightCurrentIndex = dateHighlightCurrentIndex {
+            selectDate = dateArray[dateHighlightCurrentIndex]
+        } else {
+            //設定目前系統時間的時分秒為00:00:00
+            selectDate = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
+        }
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        careDate = dateFormatter.stringFromDate(selectDate!)
         
         //比對今日日期在陣列中是第幾個
-        let index = dateArray.indexOf(today!)
+        let index = dateArray.indexOf(selectDate!)
         
         //滾動到今天日期，並置於最左側
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
         self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: false)
         
         dateHighlightCurrentIndex = indexPath.row
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
+        yearMonth.text = "\(calendar.component(.Year, fromDate: selectDate!))年\(calendar.component(.Month, fromDate: selectDate!))月"
         
-        yearMonth.text = "\(calendar.component(.Year, fromDate: today!))年\(calendar.component(.Month, fromDate: today!))月"
+        fetchItemList()
+    }
+    
+    
+    func fetchItemList() {
+        
+        //清空資料
+        self.CareItemTableView.backgroundView = nil
+        careItemArray.removeAll()
+        
+        print("\(#function) application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
+        print("\(#function) care_date = \(careDate!)")
+        
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/itemsList"
+        Alamofire.request(.POST, urlString, parameters: [
+            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+            "care_date" : "\(careDate!)",
+            "requester_id" : ""
+            ]).responseJSON(){
+                response in
+                if let jsonData = response.result.value {
+                    print("itemsList api response : \(jsonData)")
+                    let json = JSON(jsonData)
+                    let status = json["status"].stringValue
+                    let message = json["message"].stringValue
+                    if status == "200" {
+                        
+                        let jsonList = json["items_data"].arrayValue
+                        for data in jsonList {
+                            let requesterId = data["requester_id"].stringValue
+                            let requesterName = data["requester_name"].stringValue
+                            let eventId = data["event_id"].stringValue
+                            let operationTime = data["operation_time"].stringValue
+                            let itemId = data["item_id"].stringValue
+                            let itemName = data["name"].stringValue
+                            let completeTime = data["complete_time"].stringValue
+                            let sendNotification = data["important"].boolValue
+                            var note = data["note"].stringValue
+                            if itemId == "25" || itemId == "26" || itemId == "27" || itemId == "28" || itemId == "29" || itemId == "30" || itemId == "31" {  //itemId 25~31，note欄位存放藥品url
+                                note = "\(TechCareDef.HOST)\(note)"
+                            }
+                        
+                            self.careItemArray.append(CareItemModel(requesterId: requesterId, requesterName: requesterName, itemId: itemId, itemName: itemName, eventId: eventId, operationTime: operationTime, sendNotification: sendNotification, completeTime: completeTime, note: note))
+                        }
+                        
+                    } else {
+                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        print("\(#function) error : api response message = \(message)")
+                        
+                    }
+                    
+                    //如果沒資料，顯示特定文字（取資料時注意背景要先清空）
+                    if self.careItemArray.count == 0 {
+                        let noDataLabel: UILabel = UILabel(frame: CGRectMake(0, 0, self.CareItemTableView.bounds.size.width, self.CareItemTableView.bounds.size.height))
+                        noDataLabel.text             = "本日無照顧事項"
+                        noDataLabel.textColor        = UIColor.blackColor()
+                        noDataLabel.textAlignment    = .Center
+                        self.CareItemTableView.backgroundView = noDataLabel
+                        self.CareItemTableView.separatorStyle = .None
+                        
+                    }
+                    
+                }
+                self.CareItemTableView.reloadData()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,18 +170,90 @@ class ScheduleListViewController: UIViewController {
     }
     
     func finishItemBtn(sender: UIButton) {
-        //button disabled
-        sender.enabled = false
-        
         let indexPath = NSIndexPath(forItem: sender.tag, inSection: 0)
-        let cell = CareItemTableView.cellForRowAtIndexPath(indexPath) as! CareItemTableViewCell
+        //let cell = CareItemTableView.cellForRowAtIndexPath(indexPath) as! CareItemTableViewCell
         
-        //Label換顏色以表示完成
-        cell.careItem.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
-        cell.operationTime.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
-        cell.requesterName.textColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0)
+        var careItemModel: CareItemModel = careItemArray[indexPath.row]
+        
+        //[重要]檢查user default是否有由SpecialItemViewController的暫存資料，與欲更新的CareItemModel比對是否為同一Event ID，是的話，代表為含有額外輸入的資料，則使用此最新資料，並在user default清空
+//        if userDefault.objectForKey("SpecificCareItem") != nil {
+//            let tempCareItemModel: CareItemModel = (userDefault.objectForKey("SpecificCareItem") as? CareItemModel)!
+//            if tempCareItemModel.eventId == careItemModel.eventId {
+//                careItemModel = tempCareItemModel
+//                userDefault.setObject(nil, forKey: "SpecificCareItem")
+//            }
+//        }
+        
+    print("careItemModel.itemId = \(careItemModel.itemId!) , careItemModel.systolic = \(careItemModel.systolic)")
+        if (careItemModel.itemId! == "21" && (careItemModel.systolic == "null" || careItemModel.diastolic == "null" || careItemModel.heartRate == "null")) || (careItemModel.itemId! == "22" && careItemModel.bloodSugar == "null") {
+            let vc =  storyboard!.instantiateViewControllerWithIdentifier("SpecialItem") as! SpecialItemViewController
+            vc.itemId = careItemModel.itemId!
+            vc.inputCareItemModel = careItemModel
+            
+            //for demo day
+            careItemModel.systolic = "130"
+            careItemModel.diastolic = "80"
+            careItemModel.heartRate = "80"
+            careItemModel.bloodSugar = "100"
+            
+            self.presentViewController(vc, animated: true, completion: nil)
+        } else if careItemModel.itemId! == "25" || careItemModel.itemId! == "26" || careItemModel.itemId! == "27" ||
+            careItemModel.itemId! == "28" || careItemModel.itemId! == "29" || careItemModel.itemId! == "30" ||
+            careItemModel.itemId! == "31" {
+            let vc =  storyboard!.instantiateViewControllerWithIdentifier("PhotoConfirm") as! PhotoConfirmViewController
+            vc.itemId = careItemModel.itemId!
+            vc.photoUrl = careItemModel.note!
+            self.presentViewController(vc, animated: true, completion: nil)
+        }
+        
+        
+        //更新資料
+        updateItemData(careItemModel.requesterId!,careItemModel: careItemModel)
+        
     }
     
+    func updateItemData(requeseterId: String, careItemModel: CareItemModel) {
+        
+        print("application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
+        print("care_date = \(careDate!)")
+        print("requester_id = \(requeseterId)")
+        print("items_data = \(convertModel2JSON(careItemModel))")
+        
+        let urlString: String = "\(TechCareDef.HOST)/api/v1/updateItem"
+        Alamofire.request(.POST, urlString, parameters: [
+            "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
+            "care_date" : "\(careDate!)",
+            "requester_id" : "\(requeseterId)",
+            "items_data" : "\(convertModel2JSON(careItemModel))"
+            ]).responseJSON(){
+                response in
+                if let jsonData = response.result.value {
+                    print("updateItemData api response : \(jsonData)")
+                    let json = JSON(jsonData)
+                    let status = json["status"].stringValue
+                    let message = json["message"].stringValue
+                    if status == "200" {
+                        print("message = \(message)")
+                        
+                        //刷新頁面資料
+                        self.fetchItemList()
+                    } else {
+                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                        alert.addAction(ok)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        print("\(#function) error : api response message = \(message)")
+                    }
+                }
+        }
+    }
+    
+    func convertModel2JSON(careItemModel: CareItemModel) -> String {
+        let currentTime: String?
+        dateFormatter.dateFormat = "yyyy/MM/dd hh:mm:ss"
+        currentTime = dateFormatter.stringFromDate(NSDate())
+        return "{\"event_id\" : \"\(careItemModel.eventId!)\",\"complete_time\" : \"\(currentTime!)\",\"systolic_record\" : \"\(careItemModel.systolic)\",\"diastolic_record\" : \"\(careItemModel.diastolic)\",\"heart_rate\" : \"\(careItemModel.heartRate)\",\"blood_sugar\" : \"\(careItemModel.bloodSugar)\"}"
+    }
     
 }
 
@@ -147,6 +303,9 @@ extension ScheduleListViewController: UICollectionViewDelegate {
         collectionView.reloadData()
         
         dateHighlightCurrentIndex = indexPath.row
+        careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
+        
+        fetchItemList()
     }
 }
 
@@ -156,24 +315,30 @@ extension ScheduleListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return careItemArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CareItemTableViewCell
-        cell.finishItem.tag = indexPath.row
-        cell.finishItem.addTarget(self, action: #selector(finishItemBtn(_:)), forControlEvents: .TouchUpInside)
+        cell.requesterName.text = careItemArray[indexPath.row].requesterName
+        cell.careItem.text = careItemArray[indexPath.row].itemName
+        cell.operationTime.text = careItemArray[indexPath.row].operationTime
+        print("careItemArray[indexPath.row].completeTime = \(careItemArray[indexPath.row].completeTime!)")
+        print(careItemArray[indexPath.row].completeTime!.characters.count)
+        print("itemId = \(careItemArray[indexPath.row].itemId!) , note = \(careItemArray[indexPath.row].note!)")
+        if careItemArray[indexPath.row].completeTime!.characters.count == 0 {
+            cell.finishItem.tag = indexPath.row
+            cell.finishItem.addTarget(self, action: #selector(finishItemBtn(_:)), forControlEvents: .TouchUpInside)
+            cell.finishItem.enabled = true
+        } else {
+            cell.finishItem.enabled = false
+        }
+        
         return cell
 
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "SpecificItemSegue" {
-            let _ = segue.destinationViewController as! SpecialItemViewController
-            
-        }
-    }
+
 }
 
 extension ScheduleListViewController: UITableViewDelegate {
