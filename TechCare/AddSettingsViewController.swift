@@ -16,7 +16,7 @@ class AddSettingsViewController: UIViewController {
     @IBOutlet weak var careItemTableView: UITableView!
     @IBOutlet weak var yearMonth: UILabel!
     @IBOutlet weak var saveBtn: UIBarButtonItem!
-    
+    @IBOutlet weak var headerView: UIView!
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
@@ -78,6 +78,9 @@ class AddSettingsViewController: UIViewController {
         super.viewDidLoad()
 
         activityIndicatorView.color = TechCareDef.SYSTEM_TINT
+        
+        self.headerView.layer.borderWidth = 0.5
+        self.headerView.layer.borderColor = UIColor.blackColor().CGColor
         
         //Navigation Item UI
         let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
