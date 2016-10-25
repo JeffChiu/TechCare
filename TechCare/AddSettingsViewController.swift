@@ -20,6 +20,7 @@ class AddSettingsViewController: UIViewController {
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
+    var currentMonth: Int? //記錄目前月份
     var dateFormatter = NSDateFormatter()
     var inputDate: NSDate?
     var inputRequesterName: String?
@@ -35,6 +36,7 @@ class AddSettingsViewController: UIViewController {
     var currentTextField: UITextField?
     var currentTextFieldIndex: Int?
     let userDefault = NSUserDefaults.standardUserDefaults()
+    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     
     func initSettingData() {
         self.careItemDictionary.removeAll()
@@ -75,6 +77,8 @@ class AddSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        activityIndicatorView.color = TechCareDef.SYSTEM_TINT
+        
         //Navigation Item UI
         let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
         label.text = "\(inputRequesterName!)"
@@ -138,6 +142,7 @@ class AddSettingsViewController: UIViewController {
             //設定現在系統時間的時分秒為00:00:00
             selectDate = calendar.dateBySettingHour(8, minute: 0, second: 0, ofDate: NSDate(), options: [])
         }
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: selectDate!)
         
         //比對今日日期在陣列中是第幾個
         let index = dateArray.indexOf(selectDate!)
@@ -152,9 +157,11 @@ class AddSettingsViewController: UIViewController {
         
         //如果已經完成設定，則顯示已設定資料，並且disable save按鈕
         if inputIsSet == true {
-            fetchItemList()
             self.saveBtn.enabled = false
         }
+        
+        fetchItemList()
+        
         
     }
     
@@ -254,6 +261,13 @@ class AddSettingsViewController: UIViewController {
         print("\(#function) care_date = \(careDate!)")
         print("\(#function) requester_id = \(inputRequesterId!)")
         
+        //indicator
+        self.view.addSubview(self.activityIndicatorView)
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
+        
+        self.initSettingData()
+        
         let urlString: String = "\(TechCareDef.HOST)/api/v1/itemsList"
         Alamofire.request(.POST, urlString, parameters: [
             "application_token" : "\(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)",
@@ -269,7 +283,7 @@ class AddSettingsViewController: UIViewController {
                     if status == "200" {
                         
                         if message == "No data" {
-                            self.initSettingData()
+                            
                             self.saveBtn.enabled = true
                         } else {
                             let jsonList = json["items_data"].arrayValue
@@ -286,21 +300,21 @@ class AddSettingsViewController: UIViewController {
                                 if itemId == "26" {  //26:服藥，note欄位存放藥品url
                                     note += "\(TechCareDef.HOST)\(note)"
                                 }
-                                
-                                self.careItemDictionary[Int(itemId)!] = CareItemModel(requesterId: requesterId, requesterName: requesterName, itemId: itemId, itemName: itemName, eventId: eventId, operationTime: operationTime, sendNotification: sendNotification, completeTime: completeTime, note: note)
+
+                                self.careItemDictionary[Int(itemId)!] = CareItemModel(requesterId: requesterId, requesterName: requesterName, itemId: itemId, itemName: itemName, eventId: eventId, operationTime: DateUtil.operationTimeFormat2(operationTime), sendNotification: sendNotification, completeTime: completeTime, note: note)
                             }
                             self.saveBtn.enabled = false
                         }
                         
                     } else {
-                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                         let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
                         print("\(#function) error : api response message = \(message)")
                         
                     }
-                    
+                    self.activityIndicatorView.removeFromSuperview()
                 }
                 
                 self.careItemTableView.reloadData()
@@ -338,7 +352,7 @@ class AddSettingsViewController: UIViewController {
 //                            }
 //                        }
 //                    } else {
-//                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+//                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
 //                        let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
 //                        alert.addAction(ok)
 //                        self.presentViewController(alert, animated: true, completion: nil)
@@ -350,7 +364,10 @@ class AddSettingsViewController: UIViewController {
 //    }
     
     func insertData() {
-        
+        //indicator
+        self.view.addSubview(self.activityIndicatorView)
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
         
         print("\(#function) application_token = \(userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN)!)")
         print("\(#function) care_date = \(careDate!)")
@@ -380,13 +397,14 @@ class AddSettingsViewController: UIViewController {
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                         let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
                         print("\(#function) error : api response message = \(message)")
                         
                     }
+                    self.activityIndicatorView.removeFromSuperview()
                     
                 }
                 self.careItemTableView.reloadData()
@@ -449,7 +467,14 @@ extension AddSettingsViewController: UICollectionViewDataSource {
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
+        let scrollNewMonth = NSCalendar.currentCalendar().component(.Month, fromDate: date)
+        let scrollNewDay = NSCalendar.currentCalendar().component(.Day, fromDate: date)
+        if (scrollNewMonth > currentMonth && scrollNewDay > 3) || (scrollNewMonth < currentMonth && scrollNewDay < 27) {
+            currentMonth = scrollNewMonth
+            self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(scrollNewMonth)月"
+        }
+        
+        
         return cell
     }
 }
@@ -469,7 +494,7 @@ extension AddSettingsViewController: UICollectionViewDelegate {
         
         dateHighlightCurrentIndex = indexPath.row
         careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
-        
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: dateArray[dateHighlightCurrentIndex!])
         
         
 //        let result: [Bool: Bool] = fetchRequesterList(inputRequesterId!, careDate: careDate!)
@@ -516,6 +541,9 @@ extension AddSettingsViewController: UITableViewDataSource {
         cell.sendNotification.tag = indexPath.row + 1
         cell.sendNotification.addTarget(self, action: #selector(changeSwitch(_:)), forControlEvents: .TouchUpInside)
         cell.sendNotification.on = (careItemDictionary[indexPath.row + 1]?.sendNotification)!
+        if cell.sendNotification.on == true {
+            cell.sendNotification.onTintColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
+        }
         return cell
     }
     

@@ -17,8 +17,12 @@ class RequesterListViewController: UIViewController {
     @IBOutlet weak var RequestTableView: UITableView!
     @IBOutlet weak var yearMonth: UILabel!
     
+    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    
+    
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
+    var currentMonth: Int? //記錄目前月份
     var selectDate: NSDate?
     var careDate: String?
     var dateFormatter = NSDateFormatter()
@@ -38,6 +42,8 @@ class RequesterListViewController: UIViewController {
         if let app_token = userDefault.objectForKey(TechCareDef.APPLICATION_TOKEN) {
                 print("\(#function) , token =  \(app_token)")
         }
+        
+        activityIndicatorView.color = TechCareDef.SYSTEM_TINT
         
         //Navigation Item UI
         let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
@@ -93,12 +99,13 @@ class RequesterListViewController: UIViewController {
         }
         dateFormatter.dateFormat = "yyyy-MM-dd"
         careDate = dateFormatter.stringFromDate(selectDate!)
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: selectDate!)
         
         //比對今日日期在陣列中是第幾個
         let index = dateArray.indexOf(selectDate!)
 
         
-        //滾動到今天日期，並置於最左側
+        //滾動到今天日期，並置於中間
         let indexPath = NSIndexPath(forItem: index!, inSection: 0)
         self.calendarCollectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: UICollectionViewScrollPosition.CenteredHorizontally, animated: true)
         
@@ -111,6 +118,12 @@ class RequesterListViewController: UIViewController {
     }
     
     func fetchRequesterList() {
+        //indicator
+        self.view.addSubview(self.activityIndicatorView)
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
+        
+        
         //資料清空
         self.RequestTableView.backgroundView = nil
         requsterModelArray.removeAll()
@@ -142,14 +155,15 @@ class RequesterListViewController: UIViewController {
                         
                         
                     } else {
-                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                         let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
                         print("\(#function) error : api response message = \(message)")
                         
                     }
-                    
+
+                    self.activityIndicatorView.removeFromSuperview()
                 }
                 
                 //如果沒資料，顯示特定文字（取資料時注意背景要先清空）
@@ -202,7 +216,12 @@ extension RequesterListViewController: UICollectionViewDataSource {
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
+        let scrollNewMonth = NSCalendar.currentCalendar().component(.Month, fromDate: date)
+        let scrollNewDay = NSCalendar.currentCalendar().component(.Day, fromDate: date)
+        if (scrollNewMonth > currentMonth && scrollNewDay > 3) || (scrollNewMonth < currentMonth && scrollNewDay < 27) {
+            currentMonth = scrollNewMonth
+            self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(scrollNewMonth)月"
+        }
         return cell
     }
 }
@@ -223,7 +242,7 @@ extension RequesterListViewController: UICollectionViewDelegate {
         dateHighlightCurrentIndex = indexPath.row
         dateFormatter.dateFormat = "yyyy-MM-dd"
         careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
-        
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: dateArray[dateHighlightCurrentIndex!])
         
         fetchRequesterList()
     }

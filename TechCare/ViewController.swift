@@ -59,7 +59,7 @@ class ViewController: UIViewController {
                             
                             returnVal = true
                         } else {
-                            let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                            let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                             let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                             alert.addAction(ok)
                             self.presentViewController(alert, animated: true, completion: nil)

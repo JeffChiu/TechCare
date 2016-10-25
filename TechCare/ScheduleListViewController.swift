@@ -19,9 +19,11 @@ class ScheduleListViewController: UIViewController {
     
     var dateArray: [NSDate] = []
     var dateHighlightCurrentIndex: Int? //記錄目前是點選哪一個
+    var currentMonth: Int? //記錄目前月份
     
     let dateBackgroundUIColor: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0) //tiffany green
     let userDefault = NSUserDefaults.standardUserDefaults()
+    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
     let calendar = NSCalendar.currentCalendar()
     var dateFormatter = NSDateFormatter()
     var selectDate: NSDate?
@@ -31,6 +33,8 @@ class ScheduleListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        activityIndicatorView.color = TechCareDef.SYSTEM_TINT
         
         //Navigation Item UI
         let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
@@ -81,6 +85,7 @@ class ScheduleListViewController: UIViewController {
         }
         dateFormatter.dateFormat = "yyyy-MM-dd"
         careDate = dateFormatter.stringFromDate(selectDate!)
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: selectDate!)
         
         //比對今日日期在陣列中是第幾個
         let index = dateArray.indexOf(selectDate!)
@@ -99,6 +104,10 @@ class ScheduleListViewController: UIViewController {
     
     
     func fetchItemList() {
+        //indicator
+        self.view.addSubview(self.activityIndicatorView)
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
         
         //清空資料
         self.CareItemTableView.backgroundView = nil
@@ -140,13 +149,14 @@ class ScheduleListViewController: UIViewController {
                         }
                         
                     } else {
-                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                         let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
                         print("\(#function) error : api response message = \(message)")
                         
                     }
+                    
                     
                     //如果沒資料，顯示特定文字（取資料時注意背景要先清空）
                     if self.careItemArray.count == 0 {
@@ -158,6 +168,7 @@ class ScheduleListViewController: UIViewController {
                         self.CareItemTableView.separatorStyle = .None
                         
                     }
+                    self.activityIndicatorView.removeFromSuperview()
                     
                 }
                 self.CareItemTableView.reloadData()
@@ -238,7 +249,7 @@ class ScheduleListViewController: UIViewController {
                         //刷新頁面資料
                         self.fetchItemList()
                     } else {
-                        let alert = UIAlertController(title: "App異常終止", message: nil, preferredStyle: .Alert)
+                        let alert = UIAlertController(title: "系統連線異常", message: nil, preferredStyle: .Alert)
                         let ok = UIAlertAction(title: "OK", style: .Default, handler: nil)
                         alert.addAction(ok)
                         self.presentViewController(alert, animated: true, completion: nil)
@@ -284,7 +295,13 @@ extension ScheduleListViewController: UICollectionViewDataSource {
         
         //變更年月Label
         let date = dateArray[indexPath.row]
-        self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(calendar.component(.Month, fromDate: date))月"
+        let scrollNewMonth = NSCalendar.currentCalendar().component(.Month, fromDate: date)
+        let scrollNewDay = NSCalendar.currentCalendar().component(.Day, fromDate: date)
+        if (scrollNewMonth > currentMonth && scrollNewDay > 3) || (scrollNewMonth < currentMonth && scrollNewDay < 27) {
+            currentMonth = scrollNewMonth
+            self.yearMonth.text = "\(calendar.component(.Year, fromDate: date))年\(scrollNewMonth)月"
+        }
+        
         return cell
     }
 }
@@ -304,6 +321,7 @@ extension ScheduleListViewController: UICollectionViewDelegate {
         
         dateHighlightCurrentIndex = indexPath.row
         careDate = dateFormatter.stringFromDate(dateArray[dateHighlightCurrentIndex!])
+        currentMonth = NSCalendar.currentCalendar().component(.Month, fromDate: dateArray[dateHighlightCurrentIndex!])
         
         fetchItemList()
     }
@@ -321,9 +339,14 @@ extension ScheduleListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! CareItemTableViewCell
+        var startSinbol = ""
+        if careItemArray[indexPath.row].sendNotification == true {
+            startSinbol = "*"
+        }
+        
         cell.requesterName.text = careItemArray[indexPath.row].requesterName
-        cell.careItem.text = careItemArray[indexPath.row].itemName
-        cell.operationTime.text = careItemArray[indexPath.row].operationTime
+        cell.careItem.text = careItemArray[indexPath.row].itemName! + startSinbol
+        cell.operationTime.text = DateUtil.operationTimeFormat2(careItemArray[indexPath.row].operationTime!)
         print("careItemArray[indexPath.row].completeTime = \(careItemArray[indexPath.row].completeTime!)")
         print(careItemArray[indexPath.row].completeTime!.characters.count)
         print("itemId = \(careItemArray[indexPath.row].itemId!) , note = \(careItemArray[indexPath.row].note!)")

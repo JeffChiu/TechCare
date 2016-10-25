@@ -15,5 +15,6 @@ class TechCareDef {
     static let APPLICATION_TOKEN: String = "application_token"
     static let NAVIGATION_LABEL_RECT_SIZE: CGRect = CGRectMake(0, 0, 400, 44)
     static let NAVIGATION_LABEL_FONT_SIZE: UIFont = UIFont.boldSystemFontOfSize(25.0)
+    static let SYSTEM_TINT: UIColor = UIColor(red:0.27, green:0.80, blue:0.73, alpha:1.0)
     
 }
