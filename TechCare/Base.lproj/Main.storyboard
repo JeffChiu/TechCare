@@ -601,7 +601,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="行動不便，需要翻身，定時餵藥，血糖不穩定" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C82-2s-ZIh">
                                                             <rect key="frame" x="0.0" y="27" width="204" height="53"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -952,10 +952,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQX-Ew-3rD">
-                                <rect key="frame" x="-4" y="184" width="608" height="45"/>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="-4" y="228" width="608" height="1"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="7sm-2g-2U0"/>
+                                    <constraint firstAttribute="height" constant="1" id="7sm-2g-2U0"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -979,6 +979,7 @@
                             <constraint firstItem="gM7-Gn-TO1" firstAttribute="leading" secondItem="THV-cT-6Un" secondAttribute="leadingMargin" constant="-24" id="hUG-go-0fL"/>
                             <constraint firstItem="gM7-Gn-TO1" firstAttribute="top" secondItem="NbZ-KZ-Abn" secondAttribute="bottom" id="hUZ-tW-wxo"/>
                             <constraint firstItem="Iyu-9K-EPs" firstAttribute="top" secondItem="hvE-3x-aBb" secondAttribute="bottom" id="kMA-SS-D3Y"/>
+                            <constraint firstItem="hvE-3x-aBb" firstAttribute="top" secondItem="HQX-Ew-3rD" secondAttribute="bottom" id="lNo-7Z-1x1"/>
                             <constraint firstItem="hvE-3x-aBb" firstAttribute="leading" secondItem="THV-cT-6Un" secondAttribute="leadingMargin" constant="-24" id="qJc-ST-LuC"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Xnx-ya-dH1" secondAttribute="trailing" constant="-24" id="rTb-cC-xL1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="HQX-Ew-3rD" secondAttribute="trailing" constant="-24" id="tAS-fe-hcT"/>
@@ -990,6 +991,7 @@
                                 <exclude reference="OYc-hI-khp"/>
                                 <exclude reference="TER-HV-2RX"/>
                                 <exclude reference="3nD-0L-iMR"/>
+                                <exclude reference="ePi-q0-fWV"/>
                                 <exclude reference="THv-Kk-TmG"/>
                             </mask>
                         </variation>
@@ -1458,10 +1460,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54C-yk-A6q">
-                                <rect key="frame" x="-4" y="184" width="608" height="45"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="-4" y="228" width="608" height="1"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="eYw-ZN-pSa"/>
+                                    <constraint firstAttribute="height" constant="1" id="eYw-ZN-pSa"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1480,6 +1482,7 @@
                             <constraint firstItem="54C-yk-A6q" firstAttribute="leading" secondItem="8B6-Dd-gqY" secondAttribute="leadingMargin" constant="-24" id="N02-EW-8cf"/>
                             <constraint firstItem="3IS-Tf-gHV" firstAttribute="leading" secondItem="8B6-Dd-gqY" secondAttribute="leadingMargin" id="Num-Ua-vDg"/>
                             <constraint firstItem="3IS-Tf-gHV" firstAttribute="top" secondItem="8ic-xg-KWc" secondAttribute="bottom" constant="15" id="QMj-Zz-Koc"/>
+                            <constraint firstItem="gl5-db-V6r" firstAttribute="top" secondItem="54C-yk-A6q" secondAttribute="bottom" id="RFS-2L-W4d"/>
                             <constraint firstItem="gl5-db-V6r" firstAttribute="leading" secondItem="8B6-Dd-gqY" secondAttribute="leadingMargin" constant="-24" id="VfI-hr-Tbv"/>
                             <constraint firstItem="gl5-db-V6r" firstAttribute="top" secondItem="8ic-xg-KWc" secondAttribute="bottom" id="XrJ-uc-pNM"/>
                             <constraint firstItem="8ic-xg-KWc" firstAttribute="top" secondItem="DwX-2p-G2S" secondAttribute="bottom" id="f6X-Qd-cIj"/>
@@ -1497,6 +1500,7 @@
                             <mask key="constraints">
                                 <exclude reference="f6X-Qd-cIj"/>
                                 <exclude reference="riC-lV-n1k"/>
+                                <exclude reference="1xQ-PN-2X8"/>
                                 <exclude reference="yPQ-ho-nFA"/>
                                 <exclude reference="XrJ-uc-pNM"/>
                                 <exclude reference="30g-g1-nY9"/>

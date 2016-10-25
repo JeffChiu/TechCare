@@ -37,8 +37,8 @@ class ScheduleListViewController: UIViewController {
         
         activityIndicatorView.color = TechCareDef.SYSTEM_TINT
         
-        self.headerView.layer.borderWidth = 0.5
-        self.headerView.layer.borderColor = UIColor.blackColor().CGColor
+//        self.headerView.layer.borderWidth = 0.5
+//        self.headerView.layer.borderColor = UIColor.blackColor().CGColor
         
         //Navigation Item UI
         let label: UILabel = UILabel.init(frame: TechCareDef.NAVIGATION_LABEL_RECT_SIZE)
