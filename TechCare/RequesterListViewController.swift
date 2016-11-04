@@ -262,7 +262,12 @@ extension RequesterListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! RequestTableViewCell
         let requesterModel = requsterModelArray[indexPath.row]
         //cell.personalBackgroundImageView.backgroundColor = UIColor(red:0.73, green:0.92, blue:0.70, alpha:1.0) //綠色
-        cell.personalImageView.sd_setImageWithURL(NSURL(string: requesterModel.photoUrl!))
+        if let url = requesterModel.photoUrl where (!url.isEmpty && url != "http://techcare.twblank.png") {
+            cell.personalImageView.sd_setImageWithURL(NSURL(string: url))
+        } else {
+            cell.personalImageView.image = UIImage(named: "requester")
+        }
+        
         cell.requesterName.text = requesterModel.name
         cell.requesterInfo.text = requesterModel.info
         return cell
