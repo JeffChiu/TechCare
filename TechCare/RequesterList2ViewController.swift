@@ -44,8 +44,8 @@ class RequesterList2ViewController: UIViewController {
         
         
         
-        //製造90天的日期
-        for day in 1...90 {
+        //製造N天的日期
+        for day in 1...450 {
             dateArray.append(calendar.dateByAddingUnit(.Day, value: day, toDate: startDateTime, options: [])!)
         }
         

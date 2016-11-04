@@ -64,8 +64,8 @@ class ScheduleListViewController: UIViewController {
         
         
         
-        //製造90天的日期
-        for day in 1...90 {
+        //製造N天的日期
+        for day in 1...450 {
             dateArray.append(calendar.dateByAddingUnit(.Day, value: day, toDate: startDateTime, options: [])!)
         }
         
@@ -188,7 +188,7 @@ class ScheduleListViewController: UIViewController {
         let indexPath = NSIndexPath(forItem: sender.tag, inSection: 0)
         //let cell = CareItemTableView.cellForRowAtIndexPath(indexPath) as! CareItemTableViewCell
         
-        var careItemModel: CareItemModel = careItemArray[indexPath.row]
+        let careItemModel: CareItemModel = careItemArray[indexPath.row]
         
         //[重要]檢查user default是否有由SpecialItemViewController的暫存資料，與欲更新的CareItemModel比對是否為同一Event ID，是的話，代表為含有額外輸入的資料，則使用此最新資料，並在user default清空
 //        if userDefault.objectForKey("SpecificCareItem") != nil {
@@ -207,7 +207,7 @@ class ScheduleListViewController: UIViewController {
             
             //for demo day
             careItemModel.systolic = "130"
-            careItemModel.diastolic = "80"
+            careItemModel.diastolic = "95"
             careItemModel.heartRate = "80"
             careItemModel.bloodSugar = "100"
             
